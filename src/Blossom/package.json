@@ -1,0 +1,16 @@
+{
+  "name": "blossom",
+  "version": "1.0.0",
+  "description": "Static Blog Generator",
+  "main": "generate_site.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nik Gavalas",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "jsdom": "^11.5.1",
+    "ncp": "^2.0.0"
+  }
+}
