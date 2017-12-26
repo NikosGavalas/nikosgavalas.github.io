@@ -36,12 +36,12 @@ function generatePostInfo(post) {
 		post.getFileName(), post.getTitle(), post.getDate());
 }
 
-var archiveList = $('<ul></ul>').attr({ 'id': 'archiveList' });
+var archiveList = $('<ul>').attr({ 'id': 'archiveList' });
 posts.forEach(post => {
 	archiveList.append(generatePostInfo(post));
 });
 
-var latestPost = $('<ul></ul>');
+var latestPost = $('<ul>');
 latestPost.append(generatePostInfo(posts[0]));
 
 $('#postsList').append('<h3>' + config.heading + '</h3>')
@@ -63,7 +63,7 @@ function generateContent(post) {
 	var dom = new JSDOM(base, options);
 	var $ = jquery(dom.window);
 
-	$('#postsList').append('<p class="post-date">' + post.getDate() + '</p>')
+	$('#postsList').append($('<p class="post-date">').append(post.getDate()))
 		.append(post.getContent());
 
 	return dom.serialize();
