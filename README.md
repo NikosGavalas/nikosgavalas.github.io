@@ -24,7 +24,7 @@ Other nice looking blogs to get ideas:
 
 Bootstrap:
 - https://bootswatch.com/cyborg/
-- https://getbootstrap.com/docs/4.0/examples/
+- [docs](https://getbootstrap.com/docs/4.0/examples/)
 
 And a blogpost
 - https://medium.com/douglas-matoso-english/build-static-site-generator-nodejs-8969ebe34b22
