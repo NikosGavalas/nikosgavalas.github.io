@@ -13,6 +13,7 @@ TODO
 - [ ] Make the articles list a bit more verbose
 - [ ] Add Social Icons and stuff
 - [ ] Maybe make the about page the front page, and about tab 'blog'?and pull it right on the sidebar?
+- [ ] Add selection for the theme (see bt4 docs - navbar)
 
 ### Useful links
 
