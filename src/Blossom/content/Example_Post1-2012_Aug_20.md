@@ -23,6 +23,21 @@ int main(void)
 print(hi)
 ```
 
+as a wise man once said:
+
+> Eimai ninja
+
+> kai m aresoun oi melaxrines
+
+<div style="text-align:center;">
+
+
+toskati
+</div>
+
+----
+
+
 | tabels? | ... |
 | --- | --- |
 | hmmm....| |
@@ -31,6 +46,8 @@ print(hi)
 |:------|:-------:|--------:|
 | 100   | [a][1]  | ![b][2] |
 | *foo* | **bar** | ~~baz~~ |
+
+
 
  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum placerat ipsum quis interdum. Praesent rhoncus consequat dui sit amet bibendum. Sed ut porttitor nulla, sed interdum quam. Vivamus bibendum ultricies nibh, sit amet elementum lorem eleifend ac. Etiam massa magna, accumsan sed dignissim eget, commodo vitae sem. Aenean auctor lacus non nisi vulputate sollicitudin. Pellentesque pulvinar hendrerit sapien placerat lacinia. Phasellus nec tortor sit amet mauris lobortis mollis.
 

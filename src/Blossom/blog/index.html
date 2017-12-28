@@ -5,6 +5,7 @@
 
 	<meta name="description" content="Nik's personal blog">
 	<meta name="author" content="Nik Gavalas">
+	<meta name="keywords" content="Software, Personal, Blog">
 
 	<title>N.Gavalas</title>
 
@@ -14,12 +15,36 @@
 	<!-- Fonts -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans" rel="stylesheet">
-	
+
+	<!-- Highlight.js -->
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/default.min.css">
+
 	<!-- Custom CSS -->
 	<style>
+		html {
+			position: relative;
+			min-height: 100%;
+		}
+
+		body {
+			/* Margin bottom by footer height */
+			margin-bottom: 60px;
+		}
+
+		.footer {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			/* Set the fixed height of the footer here */
+			height: 60px;
+			/* Vertically center the text there */
+			line-height: 60px;
+			background-color: #f5f5f5;
+		}
+
 		body {
 			font-family: 'Merriweather', serif;
-			/* font-family: 'Open Sans', sans-serif; */	
+			/* font-family: 'Open Sans', sans-serif; */
 		}
 
 		#content {
@@ -31,6 +56,7 @@
 		}
 	</style>
 </head>
+
 <body>
 
 	<!-- Navbar -->
@@ -40,7 +66,7 @@
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			
+
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
@@ -55,20 +81,33 @@
 	<!-- Main Content -->
 	<div id="content" class="container">
 		<div class="row">
-			<div id="postsList" class="col">
-				
-			<h3>Nik's blog</h3><p>Welcome to my personal blog. The articles are mostly for self reference, but I hope they help others too.</p><hr><h4>Latest Post</h4><hr><ul><li><a href="content/Example_Post_2-2015_Jan_2.html">Example Post 2</a>&nbsp;-&nbsp;2015 Jan 2</li></ul><h4>Archive</h4><hr><ul id="archiveList"><li><a href="content/Example_Post_2-2015_Jan_2.html">Example Post 2</a>&nbsp;-&nbsp;2015 Jan 2</li><li><a href="content/Example_Post1-2012_Aug_20.html">Example Post1</a>&nbsp;-&nbsp;2012 Aug 20</li></ul></div>
+			<div class="col-md-2"></div>
+			<div id="main" class="col-md-8">
+
+			<h3>Nik's blog</h3><p>Welcome to my personal blog. The articles are mostly for self reference, but I hope they help others too.</p><hr><h4>Latest Post</h4><hr><ul><li><a href="content/Example_Post_2-2015_Jan_2.html">Example Post 2</a> - 2015 Jan 2</li></ul><h4>Archive</h4><hr><ul id="archiveList"><li><a href="content/Example_Post_2-2015_Jan_2.html">Example Post 2</a> - 2015 Jan 2</li><li><a href="content/Example_Post1-2012_Aug_20.html">Example Post1</a> - 2012 Aug 20</li></ul></div>
+			<div class="col-md-2"></div>
 		</div>
 	</div>
+
+	<!-- Footer -->
+	<footer class="footer">
+		<div class="container">
+			<span class="text-muted">Generated with
+				<a href="#">Blossom</a>
+			</span>
+		</div>
+	</footer>
 
 	<!-- JS includes for bootstrap 4 -->
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-	 
-	<!-- Custom JS -->
+
+	<!-- Highlight.js -->
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
 	<script>
-		
+		hljs.initHighlightingOnLoad();
 	</script>
+
 
 </body></html>

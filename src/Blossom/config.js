@@ -1,6 +1,7 @@
 module.exports = {
 	"description": "Nik's personal blog",
 	"author": "Nik Gavalas",
+	"keywords": "Software, Personal, Blog",
 	"title": "N.Gavalas",
 	"brand": "/home/nik",
 	"heading": "Nik's blog",
