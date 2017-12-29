@@ -1,19 +1,31 @@
 # Blossom
 
-## A static blog generator
+## A static personal blog generator
 
 Live demo [here](https://nickgavalas.com)
+
+### Features
+
+SEO meta tags etc....
+colors
 
 ### Usage
 
 TODO
 
 ### Development
-- [ ] About page with picture
-- [ ] Make the articles list a bit more verbose
-- [ ] Add Social Icons and stuff
-- [ ] Maybe make the about page the front page, and about tab 'blog'?and pull it right on the sidebar?
-- [ ] Add selection for the theme (see bt4 docs - navbar)
+
+- [ ] Add images support (in the markdown files and generally)
+- 
+- [ ] Main page: add picture (gravatar or file choice)
+- [ ] Main page: add short bio (string)
+- [ ] Main page: add short interests (string)
+- [ ] Main page: add social icons
+- [ ] Main page: add modals with pgp keys and btc addresses
+
+- [ ] Make the articles list a bit more verbose (content preview)
+
+- [x] Add selection for the theme (see bt4 docs - navbar)
 
 ### Useful links
 
