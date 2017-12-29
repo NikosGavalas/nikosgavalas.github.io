@@ -16,7 +16,7 @@ TODO
 ### Development
 
 - [ ] Add images support (in the markdown files and generally)
-- 
+
 - [ ] Main page: add picture (gravatar or file choice)
 - [ ] Main page: add short bio (string)
 - [ ] Main page: add short interests (string)
