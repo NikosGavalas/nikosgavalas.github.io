@@ -29,7 +29,9 @@ TODO
 
 - [x] Add selection for the theme (see bt4 docs - navbar)
 
-- [ ] Be able to add more pages with custom markdown
+- [ ] Be able to add more pages with custom markdown - i ll probably add another folder for that.
+
+- [ ] Fix the default bg-light.
 
 ### Useful links
 
