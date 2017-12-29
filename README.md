@@ -15,13 +15,15 @@ TODO
 
 ### Development
 
-- [ ] Add images support (in the markdown files and generally)
+- [x] Add images support (in the markdown files and generally)
 
-- [ ] Main page: add picture (gravatar or file choice)
+- [ ] Main page: add picture (file)
+- [ ] Main page: add gravatar support
+- [ ] Main page: add favicon
 - [ ] Main page: add short bio (string)
 - [ ] Main page: add short interests (string)
 - [ ] Main page: add social icons
-- [ ] Main page: add modals with pgp keys and btc addresses
+- [ ] Main page: add modals with pgp keys and btc address
 
 - [ ] Make the articles list a bit more verbose (content preview)
 
