@@ -29,6 +29,8 @@ TODO
 
 - [x] Add selection for the theme (see bt4 docs - navbar)
 
+- [ ] Be able to add more pages with custom markdown
+
 ### Useful links
 
 Other nice looking blogs to get ideas:
