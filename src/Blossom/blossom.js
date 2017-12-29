@@ -9,9 +9,6 @@ const config = require('./config');
 var Post = require('./post');
 
 
-if (!fs.existsSync('blog')) {
-	fs.mkdirSync('blog');
-}
 
 /* Create an array of all the posts */
 var posts = [];
@@ -22,31 +19,51 @@ if (!fs.existsSync('content')) {
 	process.exit(1);
 }
 
-var hasAbout = false;
-fs.readdirSync('content', 'utf8').forEach(filename => {
-	if (filename === 'about.html') {
-		// TODO posts.push(new Post(filename, '', filename, ...))
-		hasAbout = true;
+function createDir(path) {
+	if (!fs.existsSync(path)) {
+		fs.mkdirSync(path);
 	}
+}
 
-	var tokens = filename.replace(/_/g, ' ').replace(/.md/, '').split('-');
+createDir('blog');
 
-	posts.push(new Post(tokens[0], tokens[1], filename,
-		fs.readFileSync('content/' + filename, 'utf8')));
+fs.readdirSync('content', 'utf8').forEach(filename => {
+	var isMd = /^.+\.md$/;
+
+	if (isMd.test(filename)) {
+		var tokens = filename.replace(/_/g, ' ').replace(/.md/, '').split('-');
+	
+		posts.push(new Post(tokens[0], tokens[1], filename,
+			fs.readFileSync('content/' + filename, 'utf8')));
+	}
 });
 
 /* Sort them based on date */
 posts.sort((a, b) => { return (a.getDate() >= b.getDate() ? -1 : 1) });
 
+function backgroundColor() {
+	let col = config.navbar.background_color;
+	return col == '' ||
+		col == ' ' ||
+		col == 'bg-dark' ?
+		'bg-dark' : '" style="background-color: ' + col + '; "';
+}
+
 var base = fs.readFileSync('base.html', 'utf8');
-base = base.replace(/@{description}/, config.description)
-	.replace(/@{author}/, config.author)
-	.replace(/@{title}/, config.title)
-	.replace(/@{brand}/, config.brand)
-	.replace(/@{keywords}/, config.keywords);
+base = base.replace(/@{description}/, config.meta.description)
+	.replace(/@{author}/, config.meta.author)
+	.replace(/@{keywords}/, config.meta.keywords)
+	.replace(/@{title}/, config.site.title)
+	.replace(/@{brand}/, config.navbar.brand)
+	.replace(/@{theme}/g, config.navbar.theme)
+	.replace(/@{background-color}/, backgroundColor());
 
 
-function generateIndexHTML(posts) {
+function loadImage(imageFileName) {
+	fs.copyFileSync('content/' + imageFileName, 'blog/content/' + imageFileName);
+}
+
+function generateBlogHomeHTML(posts) {
 	const dom = new JSDOM(base, JSDOM_options);
 	var $ = jquery(dom.window);
 
@@ -62,8 +79,8 @@ function generateIndexHTML(posts) {
 
 	var latestPost = $('<ul>').append(archiveList.children().first().clone());
 
-	$('#main').append($('<h3>').text(config.heading))
-		.append($('<p>').text(config.message))
+	$('#main').append($('<h3>').text(config.blog.heading))
+		.append($('<p>').text(config.blog.message))
 		.append('<hr>')
 		.append($('<h4>').text('Latest Post'))
 		.append('<hr>')
@@ -72,16 +89,25 @@ function generateIndexHTML(posts) {
 		.append('<hr>')
 		.append(archiveList);
 
-	fs.writeFileSync('blog/index.html', dom.serialize());
+	fs.writeFileSync('blog/blog.html', dom.serialize());
 
 	return;
 }
 
-generateIndexHTML(posts);
+generateBlogHomeHTML(posts);
 
+function generateIndexHTML () {
+	const dom = new JSDOM(base, JSDOM_options);
+	var $ = jquery(dom.window);
 
-if (!fs.existsSync('blog/content'))
-	fs.mkdirSync('blog/content');
+	// $('#main').append
+
+	fs.writeFileSync('blog/index.html', dom.serialize());	
+}
+
+generateIndexHTML();
+
+createDir('blog/content');
 
 function generateContentHTML(post) {
 	const dom = new JSDOM(base, JSDOM_options);	
@@ -90,6 +116,11 @@ function generateContentHTML(post) {
 	$('#main').append($('<p>').addClass('post-date')
 		.append(post.getDate()))
 		.append(post.getContent());
+
+	$('img').each((index, element) => {
+		var neededImg = $(element).attr('src');
+		loadImage(neededImg);
+	}); 
 
 	return dom.serialize();
 }

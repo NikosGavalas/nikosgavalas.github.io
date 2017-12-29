@@ -30,7 +30,7 @@ class Post
 
 	getContent()
 	{
-		return converter.makeHtml(this.content);;
+		return converter.makeHtml(this.content);
 	}
 }
 
