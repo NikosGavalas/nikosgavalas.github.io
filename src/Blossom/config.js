@@ -9,35 +9,46 @@ module.exports = {
 	// title, favicon
 	"site": {
 		"title": "N.Gavalas",
-		"favicon": ""
+		"favicon": "favicon.png"
 	},
 	
 	// navbar settings
 	"navbar": {
-		"brand": "/home/nik",
+		"brand": "Nouli's homepage",
 		"theme" : "dark", // light or dark
-		"background_color": "bg-dark" // bg-dark is the default
+		"background_color": "" // leave empty for defaults
 	},
 	
 	// home settings
 	"home": {
-		"avatar": "avatar.png", // leave empty for gravatar lookup (requires email below)
-		
-		"bio": "",
-		"interests": ""
+		"avatar": {
+			'source': "avatar.png", // leave empty for gravatar lookup (requires email below)
+			'size': 100,
+			'circle': true
+		},
+
+		"name": "Nik Gavalas",
+
+		"bio": `Software Engineering student @<a href="https://www.ece.ntua.gr/en">NTUA</a>. Passionately curious about how things work.`,
+		"info": `Usually messing with Linux Systems and low-level stuff. You can visit my blog <a href="/blog">here</a>.`,
+		"interests": "Apart from building software, I also enjoy observing the nightsky, playing the drums, and travelling.",
 	},
 
 	// social: leave empty the fields you don't want to display
 	"social": {
-		"email": "",
-		"facebook": "",
+		"email": "ngavalas@protonmail.com",
+		"facebook": "", // "https://www.facebook.com/gavalnick",
+		"linkedin": "https://www.linkedin.com/in/nikosgavalas/",
 		"twitter": "",
-		"instagram": "",
-		"github": "",
-		"gitea": "",
-		"gpg": "",
-		"bitcoin": "",
-		"stackoverflow": ""
+		"instagram":  "https://www.instagram.com/gavalnick/",
+		"github": "https://github.com/NikosGavalas",
+		"gitea": "https://code.nickgavalas.com/nik",
+		"gpg": "not-yet-added", //https://nickgavalas.com/gpg",
+		"bitcoin": "", //1DRzi95fzWxi1WrfCVGqprDySemspN9xeR",
+		"google-plus": "",
+		"stackoverflow": "",
+		"skype": "",
+		"youtube": ""
 	},
 	
 	// blog home settings

@@ -3,11 +3,17 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+	<!-- SEO -->
 	<meta name="description" content="Nik's personal blog">
 	<meta name="author" content="Nik Gavalas">
 	<meta name="keywords" content="Software, Personal, Blog">
+	<meta name="robots" content="index, follow">
+	<meta name="referrer" content="always">
 
 	<title>N.Gavalas</title>
+
+	<!-- Favicon -->
+	<link id="favicon" rel="icon" type="image/png" href="./favicon.png">
 
 	<!-- Bootstrap 4 -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
@@ -54,6 +60,25 @@
 		.post-date {
 			color: gray;
 		}
+
+		.fa {
+			padding-right: 10px;
+			font-size: 30px;
+			width: 50px;
+			text-align: center;
+			text-decoration: none;
+		}
+
+		.fa:hover {
+			opacity: 0.7;
+			text-decoration: none;
+			color: black;
+		}
+
+		.social {
+			color:inherit;
+		}
+
 	</style>
 </head>
 
@@ -62,7 +87,7 @@
 	<!-- Navbar -->
 	<nav id="navBar" class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container">
-			<a class="navbar-brand" href="/">/home/nik</a>
+			<a class="navbar-brand" href="/">Nouli's homepage</a>
 			
 			<!-- Currently not used -->
 			<!--
@@ -142,6 +167,7 @@ center text
 			$('h2').before('<br>').after('<br>');
 			$('h3').before('<br>').after('<br>');
 			$('h4').before('<br>').after('<br>');
+			$('h5').before('<br>').after('<br>');
 
 			// make images centered and responsive
 			$('img').addClass('mx-auto d-block img-fluid');

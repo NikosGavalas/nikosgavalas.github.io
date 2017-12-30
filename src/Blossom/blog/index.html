@@ -3,11 +3,17 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+	<!-- SEO -->
 	<meta name="description" content="Nik's personal blog">
 	<meta name="author" content="Nik Gavalas">
 	<meta name="keywords" content="Software, Personal, Blog">
+	<meta name="robots" content="index, follow">
+	<meta name="referrer" content="always">
 
 	<title>N.Gavalas</title>
+
+	<!-- Favicon -->
+	<link id="favicon" rel="icon" type="image/png" href="content/favicon.png">
 
 	<!-- Bootstrap 4 -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
@@ -54,6 +60,25 @@
 		.post-date {
 			color: gray;
 		}
+
+		.fa {
+			padding-right: 10px;
+			font-size: 30px;
+			width: 50px;
+			text-align: center;
+			text-decoration: none;
+		}
+
+		.fa:hover {
+			opacity: 0.7;
+			text-decoration: none;
+			color: black;
+		}
+
+		.social {
+			color:inherit;
+		}
+
 	</style>
 </head>
 
@@ -62,7 +87,7 @@
 	<!-- Navbar -->
 	<nav id="navBar" class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container">
-			<a class="navbar-brand" href="/">/home/nik</a>
+			<a class="navbar-brand" href="/">Nouli's homepage</a>
 			
 			<!-- Currently not used -->
 			<!--
@@ -91,7 +116,7 @@
 			<div class="col-md-2"></div>
 			<div id="main" class="col-md-8">
 
-			</div>
+			<img class="rounded-circle" src="./content/avatar.png" alt="avatar" width="100" height="100"><div class="col-md-10 offset-md-1" id="info"><h1 class="text-center">Nik Gavalas</h1><h5>Software Engineering student @<a href="https://www.ece.ntua.gr/en">NTUA</a>. Passionately curious about how things work.</h5><h5>Usually messing with Linux Systems and low-level stuff. You can visit my blog <a href="/blog">here</a>.</h5><h5>Apart from building software, I also enjoy observing the nightsky, playing the drums, and travelling.</h5><h5>Connect:</h5><ul id="social-list" class="list-inline"><li class="list-inline-item"><a class="social fa fa-envelope" href="mailto: ngavalas@protonmail.com"></a></li><li class="list-inline-item"><a class="social fa fa-linkedin" href="https://www.linkedin.com/in/nikosgavalas/"></a></li><li class="list-inline-item"><a class="social fa fa-instagram" href="https://www.instagram.com/gavalnick/"></a></li><li class="list-inline-item"><a class="social fa fa-github" href="https://github.com/NikosGavalas"></a></li><li class="list-inline-item"><a class="social fa fa-code-fork" href="https://code.nickgavalas.com/nik"></a></li><li class="list-inline-item"><a class="social fa fa-key" href="not-yet-added"></a></li></ul></div></div>
 			<div class="col-md-2"></div>
 		</div>
 	</div>
@@ -133,6 +158,7 @@
 			$('h2').before('<br>').after('<br>');
 			$('h3').before('<br>').after('<br>');
 			$('h4').before('<br>').after('<br>');
+			$('h5').before('<br>').after('<br>');
 
 			// make images centered and responsive
 			$('img').addClass('mx-auto d-block img-fluid');
