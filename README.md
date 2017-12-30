@@ -33,6 +33,8 @@ TODO
 
 - [ ] Fix the default bg-light.
 
+- [ ] Add Open Graph metadata (meta properites etc)
+
 ### Useful links
 
 Other nice looking blogs to get ideas:
