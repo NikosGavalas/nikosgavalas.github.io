@@ -62,8 +62,13 @@ base = base.replace(/@{description}/, config.meta.description)
 	.replace(/@{theme}/g, config.navbar.theme)
 	.replace(/@{background-color}/, backgroundColor());
 
+	
 function loadImage(imageFileName) {
-	fs.copyFileSync('content/' + imageFileName, 'blog/content/' + imageFileName);
+	var src = 'content/' + imageFileName;
+	var dst = 'blog/content/' + imageFileName;
+
+	if (!fs.existsSync(dst))
+		fs.copyFileSync(src, dst);
 }
 
 loadImage(config.site.favicon);

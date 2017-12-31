@@ -14,7 +14,7 @@ module.exports = {
 	
 	// navbar settings
 	"navbar": {
-		"brand": "Nouli's homepage",
+		"brand": "/home/nik",
 		"theme" : "dark", // light or dark
 		"background_color": "" // leave empty for defaults
 	},

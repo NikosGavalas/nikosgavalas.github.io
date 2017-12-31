@@ -30,7 +30,26 @@ class Post
 
 	getContent()
 	{
-		return converter.makeHtml(this.content);
+		var test = 'asdf dfasfqw $$ peos $$ fja jf;';
+		test = test.split('$$');
+		var ret = '';
+		for (var i = 0; i < test.length; i++) {
+			if (i % 2 == 0) {
+				ret += test[i];
+			} 
+		}
+		console.log(ret);
+
+		var part = this.content.split('$$');
+		var ret = '';
+
+		for (var i = 0; i < part.length; i++) {
+			if (i % 2 == 0) {
+				ret += part[i];
+			}
+		}
+
+		return converter.makeHtml(this.content.split(/$$.+$$/g).join(''));
 	}
 }
 
