@@ -17,21 +17,25 @@ TODO
 
 - [x] Add images support (in the markdown files and generally)
 
-- [ ] Main page: add picture (file)
-- [ ] Main page: add gravatar support
-- [ ] Main page: add favicon
-- [ ] Main page: add short bio (string)
-- [ ] Main page: add short interests (string)
-- [ ] Main page: add social icons
+- [x] Main page: add picture (file)
+- [x] Main page: add gravatar support
+- [x] Main page: add favicon
+- [x] Main page: add short bio (string)
+- [x] Main page: add short interests (string)
+- [x] Main page: add social icons
 - [ ] Main page: add modals with pgp keys and btc address
 
 - [ ] Make the articles list a bit more verbose (content preview)
 
 - [x] Add selection for the theme (see bt4 docs - navbar)
+- [ ] Add selection for image in the navbar instead of brandname
+- [ ] Add selection for button colors
+
+- [ ] Add support for math expressions (mathjax)
 
 - [ ] Be able to add more pages with custom markdown - i ll probably add another folder for that.
 
-- [ ] Fix the default bg-light.
+- [x] Fix the default bg-light.
 
 - [ ] Add Open Graph metadata (meta properites etc)
 
