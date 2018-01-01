@@ -1,12 +1,12 @@
 # Short Docker Tutorial
 
-Note about the notation: all the $<...> fields below are variables, used for demonstration.
-
 ## Intro
 
 **TODO:** explain what docker is how it works etc... <!-- see [this](https://www.youtube.com/watch?v=YFl2mCHdv24&t=9s) to get ideas -->
 
 ## Images
+
+Note about the notation: all the $<...> fields below are variables, used for demonstration.
 
 List Images: `$ docker images`
 
@@ -19,6 +19,7 @@ Commands:
 | RUN $command    | Runs a command on the image while building it (it is commited to the docker image). Often used to install packages.| RUN apt-get update |
 | CMD ["$command"] | The command the container executes by default when you launch the built image. Only one CMD allowed per Dockerfile. The CMD can be overridden when starting a container with docker run $image $other_command | CMD ["/bin/bash"] |
 | EXPOSE $port | Exposes a port to the host machine | EXPOSE 80 |
+| WORKDIR $dir | Sets a working directory | WORKDIR /home/node |
 | ENV $VAR_NAME $value| Sets environment variables inside the image | ENV LISTEN_PORT 8080 |
 | COPY $src $dest  | Copy files from src path (host) to destination path (inside the image) while building it | COPY config/php.ini /usr/local/etc/php
 
