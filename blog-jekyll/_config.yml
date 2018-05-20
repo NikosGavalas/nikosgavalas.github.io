@@ -2,9 +2,9 @@
 url: "nickgavalas.com"
 baseurl: ""
 
-title: Nik Gavalas
+title: Nick Gavalas
 
-description: Software Engineering Student at NTUA.
+description: Software Engineering, Systems, Networks
 
 # Navbar
 # List of links in the navigation bar
@@ -13,7 +13,7 @@ navbar-links:
   CV: "cv.pdf"
   Projects:
     - GitHub: "https://github.com/NikosGavalas"
-    - Personal Gitlab: "https://git.nickgavalas.com/"
+    - Self-Hosted Gitlab: "https://git.nickgavalas.com/"
 
 avatar: "https://www.gravatar.com/avatar/76aadab466c79bdcf3b3ed153cae04da?s=290"
 
