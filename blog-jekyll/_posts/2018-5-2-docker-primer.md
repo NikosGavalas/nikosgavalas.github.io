@@ -18,8 +18,8 @@ Docker is a platform that allows you to run your applications in an **isolated e
 
 Docker containers behave **like virtual machines**, meaning that they run your application in a sandboxed environment, with restricted access to the host machine's resources, but have the following differences:
 
-- In constrast to the VMs, Docker uses the actual **host machine's kernel**. For this reason Docker containers can be started in second(s) (while VMs need significantly more time to boot) and are very expendable (you can completely remove a linux debian image for example and start another in less than a second), and
-- Provides all the **software dependencies** and tools (bins/libs) needed for your app to run, in a very cohesive way. This is means that if your app runs in a docker container, then it will run and behave the same way on every other computer/server that executes the same container.
+- In constrast to the VMs, Docker uses the actual **host machine's kernel**. For this reason Docker containers can be started in second(s) (while VMs need significantly more time to boot) and are very expendable (you can completely remove a linux debian container for example and start another in less than a second), and
+- Provides all the **software dependencies** and tools (bins/libs) needed for your app to run, in a very cohesive way. This is means that if your app runs in a docker container, then it will run and behave the same way on every other computer/server that executes the same container via Docker.
 
 Let's think of a use case:
 
@@ -27,7 +27,7 @@ You have written a Python app, with quite a few dependencies. You have two optio
 - You either ship it with a script, that installs all these the dependencies which also often require root priviledges and piss people off, or
 - You ship it nicely wrapped in a container.
 
-Now of course containers need to be built somehow. The instructions to do so are placed in the *Dockerfile*. That's what you ship with your app, a simple file. 
+Now of course images need to be built somehow. The instructions to do so are placed in the *Dockerfile*. That's what you ship with your app, a simple file. 
 
 Now the guy that want to run your application, will simply:
 1. Build the **image** from the Dockerfile (or pull it directly from the [Docker Hub](https://hub.docker.com/))
