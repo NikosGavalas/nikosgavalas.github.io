@@ -13,7 +13,7 @@ navbar-links:
   CV: "cv.pdf"
   Projects:
     - GitHub: "https://github.com/NikosGavalas"
-    - Self-Hosted Gitlab: "https://git.nickgavalas.com/"
+    - Self-Hosted Gitlab: "https://git.nickgavalas.com/public"
 
 avatar: "https://www.gravatar.com/avatar/76aadab466c79bdcf3b3ed153cae04da?s=290"
 
@@ -159,6 +159,7 @@ exclude:
   - LICENSE
   - README.md
   - Vagrantfile
+  - 2015-02-27-test-markdown.md
 
 # prose.io config
 prose:

@@ -5,8 +5,9 @@ subtitle: Software, Systems, Networks.
 ---
 
 Analytical, highly-motivated, conscientious, results-driven software engineer, with a passion about finding 
-optimal solutions to various problems. Always excited about learning and applying new technologies. Excellent 
-written and verbal communication skills.
+optimal solutions to various problems. Always excited about learning and applying new technologies. 
+
+<!-- Add someday:Excellent written and verbal communication skills. -->
 
 I am mainly interested in distributed systems, orchestrating many computing platforms to effectively and efficiently handle 
 big amounts of data and extract beneficial information. 
