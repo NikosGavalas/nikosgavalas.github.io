@@ -1,5 +1,5 @@
 # General
-url: "nickgavalas.com"
+url: "http://nickgavalas.com"
 baseurl: ""
 
 title: Nick Gavalas
@@ -15,7 +15,7 @@ navbar-links:
     - GitHub: "https://github.com/NikosGavalas"
     - Self-Hosted Gitlab: "https://git.nickgavalas.com/public"
 
-avatar: "https://www.gravatar.com/avatar/76aadab466c79bdcf3b3ed153cae04da?s=290"
+avatar: "/img/avatar.jpg"
 
 # If you want to have an image logo in the top-left corner instead of the title text,
 # then specify the following parameter
