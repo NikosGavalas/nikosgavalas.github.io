@@ -3,7 +3,5 @@ _site
 .sass-cache
 .vagrant
 
-dock.sh
-resume-jekyll
 cv.pdf
 2015-02-27-test-markdown.md

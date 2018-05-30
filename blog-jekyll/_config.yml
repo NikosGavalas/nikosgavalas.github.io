@@ -10,7 +10,7 @@ description: Software Engineering, Systems, Networks
 # List of links in the navigation bar
 navbar-links:
   Blog: "blog"
-  CV: "cv.pdf"
+  CV: "cv-ngavalas.pdf"
   Projects:
     - GitHub: "https://github.com/NikosGavalas"
     - Self-Hosted Gitlab: "https://git.nickgavalas.com/public"
