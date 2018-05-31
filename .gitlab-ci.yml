@@ -12,7 +12,7 @@ build:
   artifacts:
     name: blog
     paths:
-      - _site/
+      - blog-jekyll/_site/
     expire_in: 1 week
 
 deploy:
