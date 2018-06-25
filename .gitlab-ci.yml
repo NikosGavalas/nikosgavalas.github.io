@@ -1,11 +1,12 @@
+variables:
+  LC_ALL: "C.UTF-8"
+  LANG: "en_US.UTF-8"
+  LANGUAGE: "en_US.UTF-8"
 
 build:
   image: jekyll-arm
   stage: build
   script:
-    - export LC_ALL="C.UTF-8"
-    - export LANG="en_US.UTF-8"
-    - export LANGUAGE="en_US.UTF-8"
     - cd blog-jekyll
     - bundle install
     - bundle exec jekyll build
