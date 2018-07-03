@@ -113,15 +113,15 @@ Useful parameters:
 
 | Parameter (with example)| Explanation | 
 | --- | --- | 
-| --name my_container | Give a name to the container | 
-| -v /home/user/src:/var/www/html | Mount a volume (basically share directory with the host) | 
-| -p 8080:80 | Maps the port of the host to the port of the container |
-| -d | Detached mode - run in the background | 
-| -it | Allocates to the container a valid pseudo-tty and keeps stdin connected |
-| --env VAR1=value | Sets environment variable to the container |
-| --restart=always | Always restarts the container if it stops |
-| --link another_container | Links containers together. Docker updates the /etc/hosts file in the one container to add "another_container" as a local hostname pointing to the other container. However this method is not recommended. It is better to define a docker Network (see below).| 
-| --network=mynetwork | Places the container in a user-defined network (see Network section below). Using user-defined networks you have an internal name resolution at your disposal. You can call other containers on the same user-defined network by name. |
+| `--name my_container` | Give a name to the container | 
+| `-v /home/user/src:/var/www/html` | Mount a volume (basically share directory with the host) | 
+| `-p 8080:80` | Maps the port of the host to the port of the container |
+| `-d` | Detached mode - run in the background | 
+| `-it` | Allocates to the container a valid pseudo-tty and keeps stdin connected |
+| `--env VAR1=value` | Sets environment variable to the container |
+| `--restart=always` | Always restarts the container if it stops |
+| `--link another_container` | Links containers together. Docker updates the /etc/hosts file in the one container to add "another_container" as a local hostname pointing to the other container. However this method is not recommended. It is better to define a docker Network (see below).| 
+| `--network=mynetwork` | Places the container in a user-defined network (see Network section below). Using user-defined networks you have an internal name resolution at your disposal. You can call other containers on the same user-defined network by name. |
 
 There are also a lot more parameters, allowing you to control resource allocation to the container,
 networking etc. For more check [this](https://docs.docker.com/engine/reference/commandline/run/) page.
