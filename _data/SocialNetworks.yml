@@ -98,6 +98,6 @@ yelp:
 
 # Custom
 gitlab:
-  name: "Personal Gitlab"
-  baseURL: "https://git.nickgavalas.com/"
+  name: "Gitlab"
+  baseURL: "https://gitlab.com/users/"
   icon: "fa-git"

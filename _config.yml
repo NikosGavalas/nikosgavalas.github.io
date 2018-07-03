@@ -10,10 +10,10 @@ description: Software Engineering, Systems, Networks
 # List of links in the navigation bar
 navbar-links:
   Blog: "blog"
-  CV: "cv-ngavalas.pdf"
+  # CV: "cv-ngavalas.pdf"
   Projects:
     - GitHub: "https://github.com/NikosGavalas"
-    - Self-Hosted Gitlab: "https://git.nickgavalas.com/public"
+    - Self-Hosted Gitlab: "https://gitlab.com/users/nickgavalas/projects"
 
 avatar: "/img/avatar.jpg"
 
@@ -69,7 +69,7 @@ social-network-links:
     #steam: 
     #twitch: 
     #yelp:
-    gitlab: "public"
+    gitlab: "nickgavalas"
 
 # Select which share links to show in posts
 share-links-active:

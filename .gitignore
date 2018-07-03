@@ -3,6 +3,7 @@ _site
 .sass-cache
 .vagrant
 .gitlab-ci.yml
+.2018-5-30-bsd-quagga-routing-tutorial.md
 
 preview.sh
 cv-ngavalas.pdf
