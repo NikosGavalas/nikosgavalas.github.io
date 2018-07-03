@@ -13,7 +13,7 @@ navbar-links:
   # CV: "cv-ngavalas.pdf"
   Projects:
     - GitHub: "https://github.com/NikosGavalas"
-    - Self-Hosted Gitlab: "https://gitlab.com/users/nickgavalas/projects"
+    - Gitlab: "https://gitlab.com/users/nickgavalas/projects"
 
 avatar: "/img/avatar.jpg"
 
