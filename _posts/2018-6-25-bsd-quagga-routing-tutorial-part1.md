@@ -28,15 +28,18 @@ Enable packet forwarding (act as gateway)
 ```
 $ sysrc gateway_enable="YES"
 ```
+
 Set hostname (kept after reboot):
 ```
 $ sysrc hostname="router.example.com"
 ```
+
 Configure interfaces:
 ```
 $ sysrc ifconfig_em0="inet 10.10.10.100 netmask 255.255.255.0"
 $ sysrc ifconfig_em1="DCHP" # aquire address from DHCP
 ```
+
 Set gateway 10.10.10.100:
 ```
 $ sysrc defaultrouter="10.10.10.100"
@@ -48,14 +51,17 @@ Activate/Deactivate interface em0:
 ```
 $ ifconfig em0 up/down
 ```
+
 Specify address 192.168.1.1, netmask 255.255.255.0 and broadcast address 192.168.1.255 on em0:
 ```
 $ ifconfig em0 192.168.1.1 netmask 255.255.255.0 broadcast 192.168.1.255
 ```
+
 Quicker way:
 ```
 $ ifconfig em0 192.168.1.1/24
 ```
+
 Delete address from interface em0:
 ```
 $ ifconfig em0 delete
@@ -107,6 +113,7 @@ Write output to PCAP file:
 ```
 $ tcpdump -w pcap_file
 ```
+
 Read PCAP file:
 ```
 $ tcpdump -r pcap_file
@@ -118,6 +125,7 @@ No hostnames/ports resolution, be very verbose, use absolute sequence numbers an
 ```
 $ tcpdump -nnvvvS src 10.5.2.3 and dst port 3389
 ```
+
 No hostname/ports resolution, show ethernet header, and display all packets that either use the udp protocol or they come from host 192.168.1.2 and go to network 192.168.1.0/24:
 ```
 $ tcpdump -nne 'udp or (src 192.168.1.2 and dest net 192.168.1.0/24)'
@@ -129,6 +137,7 @@ Show active connections without name resolution:
 ```
 $ netstat -an
 ```
+
 Show routing table without name resolution:
 ```
 $ netstat -rn
@@ -144,6 +153,7 @@ View arp table
 ```
 $ arp -a
 ```
+
 Clear arp table
 ```
 $ arp -d -a
@@ -155,38 +165,47 @@ Create/Destroy a network pseudo-device bridge called bridgeX where X=0:
 ```
 $ ifconfig bridge0 create/destroy
 ```
+
 Add as members the interface em0, em1, em2 and enable bridge0 (run ifconfig em0 up etc first):
 ```
 $ ifconfig bridge0 addm em0 addm em1 addm em2 up 
 ```
+
 Remove interface em0 from bridge0:
 ```
 $ ifconfig bridge0 deletem em0 
 ```
+
 View the addresses that bridge0 has learned and associated ports:
 ```
 $ ifconfig bridge0 addr 
 ```
+
 Clear addresses that have been learned dynamically:
 ```
 $ ifconfig bridge0 flush 
 ```
+
 Enable the STP protocol on interfaces em0, em1, em2 of bridge bridge0:
 ```
 $ ifconfig bridge0 stp em0 stp em1 stp em2 
 ```
+
 Disable the STP protocol on interfaces em0, em1, em2 of bridge bridge0:
 ```
 $ ifconfig bridge0 -stp em0 -stp em1 -stp em2 
 ```
+
 Set priority value for bridge bridge0 (default value is 32768, minimum 0 and maximum is 61440):
 ```
 $ ifconfig bridge0 priority value 
 ```
+
 Set priority value for interface em0 of bridge bridge0:
 ```
 $ ifconfig bridge0 ifpriority em0 <value>
 ```
+
 Set cost for path through em0 of bridge bridge0:
 ```
 $ ifconfig bridge0 ifpathcost em0 <value> 
@@ -198,14 +217,17 @@ Create a network pseudo-device for aggregating links, called laggX, where X=0 fo
 ```
 $ ifconfig lagg0 create 
 ```
+
 Add interface em0 to lagg0:
 ```
 $ ifconfig lagg0 laggport em0
 ```
+
 Remove interface em0 from lagg0:
 ```
 $ ifconfig lagg0 -laggport em0
 ```
+
 Specify aggregation protocol (default value is failov):
 ```
 $ ifconfig lagg0 laggproto proto
@@ -217,6 +239,7 @@ Create pseudo-interface VLAN based on interface em0, that belongs to vlan with v
 ```
 $ ifconfig em0.5 create vlan 5 vlandev em0 inet 192.168.20.20/24
 ```
+
 Create only the pseudo-interface with vlan_tag=5:
 ```
 $ ifconfig em0.5 create
@@ -230,38 +253,47 @@ Enable packet forwarding:
 ```
 $ systcl net.inet.ip.forwarding=1
 ```
+
 Enable proxy ARP
 ```
 $ sysctl net.link.ether.inet.proxyall=1
 ```
+
 View system routing table:
 ```
 $ netstat -r
 ```
+
 Add default route:
 ```
 $ route add default 192.168.1.1
 ```
+
 Add route to network 192.168.0.0/16 through gateway 192.168.1.1
 ```
 $ route add -net 192.168.0.0/16 192.168.1.1
 ```
+
 Add route to host 192.168.1.2 through gateway 192.168.1.1
 ```
 $ route add -host 192.168.1.2 192.168.1.1
 ```
+
 Change gateway for already defined route to network 192.168.0.0/16:
 ```
 $ route change -net 192.168.0.0/16 192.168.2.1
 ```
+
 Show route for specified destination
 ```
 $ route show <destination>
 ```
+
 Delete route for destination
 ```
 $ route del <destination>
 ```
+
 Delete all routes
 ```
 $ route flush
@@ -275,6 +307,7 @@ Enable by loading the corresponding kernel module:
 ```
 $ kldload ipfw
 ```
+
 Add ipfw rule:
 ```
 $ ipfw add rule_number action proto from src src_port to dst dst_port options
@@ -293,6 +326,7 @@ Show ipfw rules:
 ```
 $ ipfw show
 ```
+
 Flush all rules:
 ```
 $ ipfw flush
@@ -313,6 +347,8 @@ $ ipfw nat nat_number config nat_config
 - redirect_addr _localIP_ _publicIP_: translate _publicIP_ to _localIP_ and vice versa
 - redirect_proto _proto_ _localIP_ [publicIP [remoteIP]]: same but for protocol _proto_
 - redirect_port _proto_ _targetIP:targetPort_ [_aliasIP:_]_aliasPort_ [_remoteIP_[:_remotePort_]]: basically port forwarding
+
+
 Show all NAT tables:
 ```
 $ ipfw nat show config
@@ -323,10 +359,13 @@ $ ipfw nat show config
 ```
 $ ipfw add 100 deny ip from 1.2.3.0/24 to me
 ```
+
 ```
 $ ipfw add 200 allow tcp from me to any keep-state
 ```
+
 Create an in-kernel NAT table with instance number 123 so that packets forwarded to it (matched by the corresponding ipfw rule) have their addresses translated to the address of interface em0, they reset when addresses change and traffic going to 172.16.16.2 (em0) is translated to 192.168.1.3. Then attach this table to ipfw rule 100:
+
 ```
 $ ipfw nat 123 config if em0 reset redirect_addr 192.168.1.3 172.16.16.2
 $ ipfw add 100 nat 123 all from any to any
