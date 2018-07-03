@@ -44,6 +44,7 @@ Save configuration:
 ```
 
 ### Basic interface configuration
+
 Enter interface configuration mode for em0:
 ```
 (config)# int em0
@@ -62,6 +63,7 @@ Watch for changes in interface status:
 ```
 
 ### Static routing with Quagga
+
 Enable packet forwarding:
 ```
 (config)# ip forwarding
@@ -113,6 +115,7 @@ See RIP status
 ## OSPF Protocol
 
 ### Enable
+
 Enter router configuration mode for OSPF:
 ```
 (config)# router ospf
@@ -123,6 +126,7 @@ Set router ID to 1.1.1.1:
 ```
 
 ### Configuration
+
 Enable OSPF on interfaces that belong in the network 192.168.0.0/16 and relate them to area 1 (area 0 is the backbone):
 ```
 (config-router)# network 192.168.0.0/16 area 1
@@ -141,6 +145,7 @@ Specify network type (e.g. broadcast, point-to-point etc):
 ```
 
 ### Information
+
 Show OSPF general information and areas:
 ```
 # show ip ospf
@@ -181,6 +186,7 @@ Enter router configuration mode for bgp, in AS (autonomous system) 65010
 (config)# router bgp 65010
 ```
 ### Configuration
+
 Add network 192.168.0.0/16 to be advertised by BGP (does not activate bgp) on corresponding interfaces:
 ```
 (config-router)# network 192.168.0.0/16
@@ -203,6 +209,7 @@ Aggregate network prefixes to reduce the size of BGP routing table:
 ```
 
 ### Information
+
 Show general info that BGP has learned:
 ```
 # show ip bgp 
@@ -233,6 +240,7 @@ Show routes that BGP learns from neighbor 172.17.17.1:
 ```
 
 ### Applying policies
+
 Create a filter (prefix list) of permitted (permit) or denied (deny) prefixes with name PrefixListName:
 ```
 (config)# ip prefix-list PrefixListName permit/deny prefix 
@@ -255,6 +263,7 @@ Apply route map in neighbor 172.17.17.1 to incoming (in) or outgoing (out) traff
 ## IPv6
 
 ### General (Shell)
+
 To enable ipv6 on em0 and accept Router Advertisement messages:
 ```
 $ sysrc ifconfig_em0_ipv6="inet6 accept_rtadv"
@@ -275,7 +284,9 @@ Add as default gateway the host fd00:1::1 :
 ```bash
 $ route -6 add default fd00:1::1
 ```
+
 ### Routing (Quagga)
+
 Enable daemons for ipv6:
 ```
 $ service quagga stop
@@ -294,13 +305,17 @@ Show routing table for ipv6:
 ```
 # sh ipv6 route
 ```
+
 #### Static
+
 Add static route to network fd00:2::/64 through fd00:3::2
 ```
 (config)# ipv6 route fd00:2::/64 fd00:3::2
 ```
 #### Dynamic
+
 ##### RIP
+
 Enter router configuration mode for ripng:
 ```
 (config)# router ripng
@@ -309,7 +324,9 @@ Enable RIP for ipv6 on interface em0:
 ```
 (config-router)# net em0
 ```
+
 ##### OSPF
+
 Enter router configuration mode for BGP:
 ```
 (config)# router ospf6
@@ -322,7 +339,9 @@ Activate ospf on interface em0 in area 0.0.0.0:
 ```
 (config-ospf6)# int em0 area 0.0.0.0
 ```
+
 ##### BGP
+
 Enter router configuration mode for BGP declaring autonomous system (AS) 65010
 ```
 (config)# router bgp 65010

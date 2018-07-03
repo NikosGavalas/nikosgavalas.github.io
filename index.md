@@ -5,7 +5,7 @@ subtitle: Software, Systems, Networks.
 ---
 
 Analytical, conscientious, results-driven software engineer, with a passion about finding 
-optimal solutions to various problems. Always excited about learning and applying new technologies. 
+optimal solutions to various problems. Always excited about learning and applying new technologies.
 
 <!-- I' ll just keep it minimal... -->
 

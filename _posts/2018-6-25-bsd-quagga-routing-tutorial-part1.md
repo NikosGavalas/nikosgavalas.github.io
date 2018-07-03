@@ -18,10 +18,12 @@ This post is the first part, in which we'll give an overview of the networking c
 ---
 
 ## FreeBSD
+
 System Configuration in `/etc/rc.conf`.
 Instead of directly editing the file it's better to use `sysrc`. 
 
 ### rc.conf - sysrc
+
 Enable packet forwarding (act as gateway)
 ```
 $ sysrc gateway_enable="YES"
@@ -41,6 +43,7 @@ $ sysrc defaultrouter="10.10.10.100"
 ```
 
 ### ifconfig
+
 Activate/Deactivate interface em0:
 ```
 $ ifconfig em0 up/down
@@ -59,14 +62,17 @@ $ ifconfig em0 delete
 ```
 
 ### dhclient
+
 Activate DHCP client on interface em0:
 ```
 $ dhclient em0
 ```
 ### tcpdump
+
 (Credits to Daniel Miessler, more examples [here](https://danielmiessler.com/study/tcpdump/))
 
 #### Useful flags
+
 - `-i any` : Listen on all interfaces
 - `-i em0` : Listen on interface em0
 - `-n` : Don't resolve hostnames
@@ -79,6 +85,7 @@ $ dhclient em0
 - `-S` : Absolute sequence numbers
 
 #### Expressions
+
 Useful keywords are:
 
 |Keyword|Description|
@@ -95,6 +102,7 @@ Useful keywords are:
 Combine the keywords with `and` (or `&&`), `or` (or `||`), `not` (or `!`).
 
 #### Files
+
 Write output to PCAP file:
 ```
 $ tcpdump -w pcap_file
@@ -105,6 +113,7 @@ $ tcpdump -r pcap_file
 ```
 
 #### Examples
+
 No hostnames/ports resolution, be very verbose, use absolute sequence numbers and show traffic coming from host 10.5.2.3 and has destination the port number 3389:
 ```
 $ tcpdump -nnvvvS src 10.5.2.3 and dst port 3389
@@ -115,6 +124,7 @@ $ tcpdump -nne 'udp or (src 192.168.1.2 and dest net 192.168.1.0/24)'
 ```
 
 ### netstat
+
 Show active connections without name resolution:
 ```
 $ netstat -an
@@ -129,6 +139,7 @@ $ netstat -rn
 ## LANs
 
 ### ARP
+
 View arp table
 ```
 $ arp -a
@@ -139,6 +150,7 @@ $ arp -d -a
 ```
 
 ### Bridges
+
 Create/Destroy a network pseudo-device bridge called bridgeX where X=0:
 ```
 $ ifconfig bridge0 create/destroy
@@ -179,7 +191,9 @@ Set cost for path through em0 of bridge bridge0:
 ```
 $ ifconfig bridge0 ifpathcost em0 <value> 
 ```
+
 ### Link aggregation
+
 Create a network pseudo-device for aggregating links, called laggX, where X=0 for example: 
 ```
 $ ifconfig lagg0 create 
@@ -198,6 +212,7 @@ $ ifconfig lagg0 laggproto proto
 ```
 
 ### VLANs
+
 Create pseudo-interface VLAN based on interface em0, that belongs to vlan with vlan_tag=5, and assign IP address 192.168.20.20/24: 
 ```
 $ ifconfig em0.5 create vlan 5 vlandev em0 inet 192.168.20.20/24
@@ -210,6 +225,7 @@ $ ifconfig em0.5 create
 ---
 
 ## Routing Basics
+
 Enable packet forwarding:
 ```
 $ systcl net.inet.ip.forwarding=1
@@ -254,6 +270,7 @@ $ route flush
 ---
 
 ## Firewall (ipfw)
+
 Enable by loading the corresponding kernel module:
 ```
 $ kldload ipfw
@@ -282,6 +299,7 @@ $ ipfw flush
 ```
 
 ### NAT (in-kernel, on ipfw)
+
 Add entry to the NAT table:
 ```
 $ ipfw nat nat_number config nat_config
@@ -301,6 +319,7 @@ $ ipfw nat show config
 ```
 
 ### Examples
+
 ```
 $ ipfw add 100 deny ip from 1.2.3.0/24 to me
 ```
