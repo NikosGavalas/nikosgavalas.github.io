@@ -1,1 +1,1 @@
-Currently migrating from nickgavalas.com
+My site/blog [nickgavalas.com](nickgavalas.com)
