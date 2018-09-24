@@ -100,4 +100,4 @@ yelp:
 gitlab:
   name: "Gitlab"
   baseURL: "https://gitlab.com/users/"
-  icon: "fa-git"
+  icon: "fa-gitlab"
