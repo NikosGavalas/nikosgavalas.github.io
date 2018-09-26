@@ -2,7 +2,7 @@
 layout: post
 title: Building networks with FreeBSD (Part 2)
 subtitle: Guide to LANs, static and dynamic routing, both ipv4 and ipv6, with Quagga.
-tags: [Networking, Routing, Quagga, FreeBSD, IPv6, Firewalls]
+tags: [networking, routing, quagga, freeBSD, ipv6, firewalls]
 ---
 
 Welcome to the second part of my tutorial series. In this post we'll see how to use the Quagga Software Suite for dynamic routing.

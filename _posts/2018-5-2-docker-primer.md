@@ -2,7 +2,7 @@
 layout: post
 title: Docker Primer
 subtitle: Short introduction to the famous containerization software
-tags: [docker]
+tags: [docker, devops, containerization]
 ---
 
 I wrote this little article when I was learning about Docker, to use it for self reference. But
