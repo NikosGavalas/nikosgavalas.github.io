@@ -37,7 +37,7 @@ the query-solution would be as easy as `nodes[?flink_type=='slave'].ansible_proc
 
 But in my case, I first needed to convert the JSON into a list of objects, then get the first element of this list, and _then_ perform the filtering and attribute selection.
 
-The solution I have found to work correctly is this:
+The solution I have found to be working correctly is this one:
 
 ```
 [@.*][0][?flink_type==`slave`].ansible_processor_vcpus
