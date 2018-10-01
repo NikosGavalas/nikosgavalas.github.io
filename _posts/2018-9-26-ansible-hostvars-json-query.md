@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Ansible "hostvars" JSON Querying with JMESPath
-subtitle: How to get attribute values by filtering the "hostvars" variable with JMESPath
+title: Ansible hostvars JSON querying with JMESPath
+subtitle: How to get attribute values by filtering the 'hostvars' variable with JMESPath
 tags: [ansible, json, jmespath, devops]
 ---
 
@@ -33,7 +33,7 @@ Well it wasn't very easy. As it turns out, **if** my case was:
 }
 ```
 
-the query-solution would be `nodes[?flink_type=='slave'].ansible_processor_vcpus`, which would return the list `[4, 8]`.
+the query-solution would be as easy as `nodes[?flink_type=='slave'].ansible_processor_vcpus`, which would return the list `[4, 8]`.
 
 But in my case, I first needed to convert the JSON into a list of objects, then get the first element of this list, and _then_ perform the filtering and attribute selection.
 
