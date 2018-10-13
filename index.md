@@ -14,6 +14,6 @@ With a deep understanding of computer systems, from transistors to web applicati
 
 In addition to programming, I also enjoy astronomy, drumming, and travelling.
 
-If you want to check out my [blog](/blog) and [projects](https://github.com/NikosGavalas), ask for my CV, or just say hi, all contact links are in the navbar and sidebar.
+If you want to check out my [blog](/blog) and [projects](https://github.com/NikosGavalas), ask for my CV, or just say hi, all contact links are in the navbar and in the footer.
 
 -- Nick
