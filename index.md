@@ -7,18 +7,8 @@ subtitle: Software, Systems, Networks.
 Analytical, conscientious, results-driven software engineer, with a passion about finding 
 optimal solutions to various problems. Always excited about learning and applying new technologies.
 
-<!-- I' ll just keep it minimal... -->
+During my studies, which consisted of a 5 year program of 62 courses and a thesis, I have designed digital logic components in Verilog, soldered radios on circuit boards, performed signal processing in MATLAB, programmed ARM processors and AVR microcontrollers in Assembly and C, compared cache designs of CPUs, simulated entire network topologies, switches, routers, including VPNs, DMZs, studied network protocols from physical to application layer, created character device drivers for the Linux Kernel, implemented countless algorithms and analyzed their performance and complexity, solved numerous algorithmic challenges, worked in a team to build a production-ready web application, studied database designs, distributed systems, embedded systems, theoretical computer science, modern cryptographic protocols, biomedical engineering, and during my thesis I also studied machine learning algorithms and deployed some of the most known big data platforms of the industry for processing streams of data in a big scale...yeah it was a big journey, but an exciting one.
 
-<!-- Add someday:Excellent written and verbal communication skills.
+With a deep understanding of computer systems, from transistors to web applications, experience in the latest technology and knowledge of the best practices of software engineering, my goal as a professional - and enthusiastic hobbyist - is to design and implement the most efficient solution to every problem and automate everything that can be automated.
 
-I am mainly interested in distributed systems, orchestrating many computing platforms to effectively and efficiently handle 
-big amounts of data and extract beneficial information. 
-
-Other interests include embedded systems, operating systems, and artificial neural networks.
-
-Besides software, I also enjoy physics, astrophotography, drumming, and travelling.
--->
-
-<!-- well not anymore..
-_By the way, the site you are viewing is hosted on my personal home server (a mighty Raspberry Pi 3), together with my git/CI server (on an even mightier ROCK64 SBC). Hope you like it ;)_
--->
+Besides programming, I also enjoy astronomy, drumming, and travelling. If you want to check out my blog and projects, or contact me, all links are in the navbar and sidebar.
