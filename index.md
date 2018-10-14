@@ -12,7 +12,7 @@ Besides university, I have gained a lot of experience working as a developer at 
 
 With a deep understanding of computer systems, from transistors to web applications, experience in the latest technology, and knowledge of the best practices in software engineering, my goal as a professional - and enthusiastic hobbyist - is to design and implement the most efficient solution to every problem and automate everything that can be automated.
 
-In addition to programming, I also enjoy astronomy, drumming, and travelling.
+In addition to programming, I also enjoy astronomy and drumming.
 
 If you want to check out my [blog](/blog) and [projects](https://github.com/NikosGavalas), ask for my CV, or just say hi, all contact links are in the navbar and below.
 
