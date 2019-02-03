@@ -199,7 +199,7 @@ docker network rm <networkname>
 
 Hope this will help you get started with Docker to "fix" the dependency hell of modern software.
 
-For errors/suggestions, let me know asap. \( test \) $ tost $ \[ tost2 \]
+For errors/suggestions, let me know asap. \\( test \\) \\[ tost2 \\]
 
 <!--
 ## Useful links:

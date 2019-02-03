@@ -1,1 +1,1 @@
-My site/blog [nickgavalas.com](nickgavalas.com)
+My site/blog [nickgavalas.com](https://nickgavalas.com)
