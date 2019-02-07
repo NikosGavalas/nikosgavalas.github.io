@@ -13,9 +13,9 @@ Formally, we need to maximize \\( \sum_{i=1}^{n}{p_{i}f_{i}} \\), while subjecti
 
 This problem has a nice Dynamic Programming solution, which runs in `O(nW)` time ([pseudopolynomial](https://en.wikipedia.org/wiki/Pseudo-polynomial_time)). It is a computationally hard problem, as it is NP-Complete, but it has many important applications.
 
-It has [many known variations](https://en.wikipedia.org/wiki/List_of_knapsack_problems), one of which is the Multiple Choice Knapsack Problem. In this case, the items are subdivided into \\( k \\) classes, denoted \\( N_i \\), and exactly one item must be taken from each class. Formally, we need to maximize \\( \sum_{i=1}^{k}\sum_{j \in N_i}{p_{ij}x_{ij}} \\), while subjecting to \\( \sum_{i=1}^{k}\sum_{j \in N_i}{w_{ij}x_{ij}} \le W\\), with \\( \sum_{j \in N_i}{x_{ij}} = 1, \forall 1 \le i \le k \\) and \\( x_{ij} \in \\{0, 1\\}, \forall 1 \le i \le k \\) and \\( \forall j \in N_i \\).
+It has [many known variations](https://en.wikipedia.org/wiki/List_of_knapsack_problems), one of which is the Multiple Choice Knapsack Problem. In this case, the items are subdivided into \\( k \\) classes, denoted \\( N_i \\), and exactly one item must be taken from each class. Formally, we need to maximize \\( \sum_{i=1}^{k}\sum_{j \in N_i}{p_{ij}x_{ij}} \\), while subjecting to \\( \sum_{i=1}^{k}\sum_{j \in N_i}{w_{ij}x_{ij}} \le W\\), with \\( \sum_{j \in N_i}{x_{ij}} = 1, \forall i \in \\{1, ..., k\\}\\) and \\( x_{ij} \in \\{0, 1\\}, \forall i \in \\{1, ..., k\\} \\) and \\( \forall j \in N_i \\).
 
-To solve this problem, we will use a Dynamic Programming approach. The recursive equation that describes the relation of the overlapping subproblems is the following:
+To solve this problem, we will use a Dynamic Programming approach. The recursive equation that describes the relation between the overlapping subproblems is the following:
 
 \\[ Value[i, j] = \max_{1 \le u \le N_i, w_{iu} \le j}\\{ Value[i-1, j-w_{iu}] + p_{iu} \\} \\]
 
@@ -89,4 +89,4 @@ int main(int argc, char const* argv[]) {
 }
 ```
 
-The time complexity of this solution is \\(O(\sum_{i=1}^{k}{N_i}C)\\).
+The time complexity of this solution is \\(O(C\sum_{i=1}^{k}{N_i})\\).
