@@ -1,10 +1,6 @@
 .DS_Store
 _site
 .sass-cache
-.vagrant
 .gitlab-ci.yml
-
-preview.sh
-cv-ngavalas.pdf
 
 Gemfile.lock

@@ -9,13 +9,12 @@ description: Software Engineering, Systems, Networks
 # Navbar
 # List of links in the navigation bar
 navbar-links:
-  Blog: "blog"
+  About: "about"
   # CV: "cv-ngavalas.pdf"
-  Projects:
-    - GitHub: "https://github.com/NikosGavalas"
-    - Gitlab: "https://gitlab.com/users/nickgavalas/projects"
+  Projects: "https://github.com/NikosGavalas"
+    # - Gitlab: "https://gitlab.com/users/nickgavalas/projects"
 
-avatar: "/img/avatar.jpg"
+# avatar: "/img/avatar.jpg"
 
 # If you want to have an image logo in the top-left corner instead of the title text,
 # then specify the following parameter
@@ -23,6 +22,7 @@ avatar: "/img/avatar.jpg"
 
 # Background colour/image
 
+text-col: "#404040"
 navbar-col: "#F5F5F5"
 navbar-text-col: "#404040"
 navbar-children-col: "#F5F5F5"
@@ -32,6 +32,22 @@ hover-col: "#0085A1"
 footer-col: "#F5F5F5"
 footer-text-col: "#777777"
 footer-link-col: "#404040"
+
+# orange: "f15025"
+# light gray: "e6e8e6"
+# dark gray: "ced0ce"
+# black: "191919"
+# My attempt to change colours didn't go too well...
+# text-col: "#ffffff"
+# navbar-col: "#000000"
+# navbar-text-col: "#ffffff"
+# navbar-children-col: "#000000"
+# page-col: "#000000"
+# link-col: "#f15025"
+# hover-col: "#f15025"
+# footer-col: "#000000"
+# footer-text-col: "#ced0ce"
+# footer-link-col: "#e6e8e6"
 
 # Alternatively, the navbar, footer, and page background can be set to use background images
 # instead of colour
@@ -69,7 +85,7 @@ social-network-links:
     #steam: 
     #twitch: 
     #yelp:
-    gitlab: "nickgavalas"
+    #gitlab: "nickgavalas"
 
 # Select which share links to show in posts
 share-links-active:
