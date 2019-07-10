@@ -23,7 +23,7 @@ If you do not verify that the fingerprint is correct,
 some hosts may have changed addresses and you could end up 
 connecting to the wrong server in the best case scenario, or someone may be spoofing
 the hostname and execute a man-in-the-middle attack in the worst case. The MITM can then 
-unencrypt and read all communication between you and the remote host, by
+decrypt and read all communication between you and the remote host, by
 pretending to be him.
 
 So how do you verify the fingerprint then? Either ask the remote machine's
