@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Building networks with FreeBSD (Part 2) | Nick Gavalas</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/default.min.css">
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">posts</a></li>
+      
+      <li><a href="/about/">about</a></li>
+      
+      <li><a href="/tags/">tags</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Building networks with FreeBSD (Part 2)</span></h1>
+
+<h2 class="date">2018/07/03</h2>
+</div>
+
+<main>
+
+
+<p>Welcome to the second part of my tutorial series. In this post we&rsquo;ll see how to use the Quagga Software Suite for dynamic routing.</p>
+
+<p>The dynamic routing protocols we &rsquo;ll use are the most widely used today: RIP, OSPF and BGP.</p>
+
+<p>For some details on what these protocols are used for, and how they work, you can take a look at <a href="http://sabercomlogica.com/en/ebook/intra-as-and-inter-as-routing/">this post</a>.</p>
+
+<p>At the end of the post you will find details for the IPv6 versions of these protocols.</p>
+
+<p><strong>Note</strong> about notation: to indicate shell commands I&rsquo;ll be using <code>$</code>, and for quagga commands <code>#</code>.</p>
+
+<hr />
+
+<h2 id="introduction-to-the-quagga-shell">Introduction to the Quagga Shell</h2>
+
+<table>
+<thead>
+<tr>
+<th align="center">Mode</th>
+<th align="center">Command</th>
+<th align="center">Run it from</th>
+<th align="center">Prompt</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">Priviledged mode</td>
+<td align="center"><code>$ vtysh</code></td>
+<td align="center">FreeBSD Shell</td>
+<td align="center"><code>#</code></td>
+</tr>
+
+<tr>
+<td align="center">Configuration mode</td>
+<td align="center"><code># con t</code></td>
+<td align="center">Priviledged Shell</td>
+<td align="center"><code>(config)#</code></td>
+</tr>
+
+<tr>
+<td align="center">Interface Configuration mode</td>
+<td align="center"><code>(config)# int &lt;interface&gt;</code></td>
+<td align="center">Configuration Shell</td>
+<td align="center"><code>(config-if)#</code></td>
+</tr>
+
+<tr>
+<td align="center">Router Configuration mode</td>
+<td align="center"><code>(config)# router &lt;router&gt;</code></td>
+<td align="center">Configuration Shell</td>
+<td align="center"><code>(config-router)#</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>To run a command that needs to be run in Priviledged mode, but through another prompt, prepend <code>do</code> to your command.</p>
+
+<p>To exit a mode and return to the previous at any time, run <code>exit</code> or <code>ex</code>, or just hit <code>Ctrl+Z</code>.</p>
+
+<p>To cancel a command, re-write it and prepend <code>no</code>.</p>
+
+<p>To see all running configurations, run <code>sh run</code>.</p>
+
+<p>Get help for command syntax with <code>?</code> at any time.</p>
+
+<p>You can run quagga commands from the shell directly with <code>vtysh -c &quot;my_command&quot;</code>.</p>
+
+<p>Save configuration:</p>
+
+<pre><code># wr mem
+</code></pre>
+
+<h3 id="basic-interface-configuration">Basic interface configuration</h3>
+
+<p>Enter interface configuration mode for em0:</p>
+
+<pre><code>(config)# int em0
+</code></pre>
+
+<p>Assign static address 192.168.1.1</p>
+
+<pre><code>(config-if)# ip addr 192.168.1.1
+</code></pre>
+
+<p>Shutdown interface:</p>
+
+<pre><code>(config-if)# shutdown
+</code></pre>
+
+<p>Watch for changes in interface status:</p>
+
+<pre><code>(config-if)# link-detect
+</code></pre>
+
+<h3 id="static-routing-with-quagga">Static routing with Quagga</h3>
+
+<p>Enable packet forwarding:</p>
+
+<pre><code>(config)# ip forwarding
+</code></pre>
+
+<p>Add static route to 192.168.1.0/24 via 192.168.1.1 with administrative distance 1 (optional):</p>
+
+<pre><code>(config)# ip route 192.168.1.0/24 192.168.1.1 1
+</code></pre>
+
+<hr />
+
+<h2 id="rip-protocol">RIP Protocol</h2>
+
+<p>Enable RIP and enter router configuration mode for RIP:</p>
+
+<pre><code>(config)# router rip
+</code></pre>
+
+<p>Enable RIP on all interfaces that belong to the network with IP address 192.168.1.0/24:</p>
+
+<pre><code>(config-router)# net 192.168.1.0/24
+</code></pre>
+
+<p>Enable RIP on interface em0:</p>
+
+<pre><code>(config-router)# net em0
+</code></pre>
+
+<p>Set em0 to be a passive interface (does not send RIP updates):</p>
+
+<pre><code>(config-router)# passive-interface em0
+</code></pre>
+
+<p>Set RIP protocol version number (1 or 2):</p>
+
+<pre><code>(config-router)# version 1 (or 2)
+</code></pre>
+
+<p>Specify neighbor to unicast updates (important: RIPv2 by default RIP multicasts its updates through all associated interfaces, so this command must be combined with &ldquo;passive-interface&rdquo; to avoid sending simultaneously unicasts and multicasts)</p>
+
+<pre><code>(config-router)# neighbor 172.17.17.10
+</code></pre>
+
+<p>Change timers</p>
+
+<pre><code>(config-router)# timers basic &lt;update&gt; &lt;timeout&gt; &lt;garbage&gt;
+</code></pre>
+
+<p>See RIP status</p>
+
+<pre><code># sh ip rip status
+</code></pre>
+
+<hr />
+
+<h2 id="ospf-protocol">OSPF Protocol</h2>
+
+<h3 id="enable">Enable</h3>
+
+<p>Enter router configuration mode for OSPF:</p>
+
+<pre><code>(config)# router ospf
+</code></pre>
+
+<p>Set router ID to 1.1.1.1:</p>
+
+<pre><code>(config-router)# router-id 1.1.1.1
+</code></pre>
+
+<h3 id="configuration">Configuration</h3>
+
+<p>Enable OSPF on interfaces that belong in the network 192.168.0.0/16 and relate them to area 1 (area 0 is the backbone):</p>
+
+<pre><code>(config-router)# network 192.168.0.0/16 area 1
+</code></pre>
+
+<p>Set interface em0 to be a passive interface (does not send OSPF advertisements):</p>
+
+<pre><code>(config-router)# passive-interface em0
+</code></pre>
+
+<p>Specify that area 1 is of type stub (has only one router):</p>
+
+<pre><code>(config-router)# area 1 stub
+</code></pre>
+
+<p>Specify network type (e.g. broadcast, point-to-point etc):</p>
+
+<pre><code>(config-if)# ospf network &lt;type&gt;
+</code></pre>
+
+<h3 id="information">Information</h3>
+
+<p>Show OSPF general information and areas:</p>
+
+<pre><code># show ip ospf
+</code></pre>
+
+<p>Show OSPF information about interface em0:</p>
+
+<pre><code># show ip ospf interface em0
+</code></pre>
+
+<p>Show OSPF information about neighbors of interface em0:</p>
+
+<pre><code># show ip ospf neighbor em0
+</code></pre>
+
+<p>Display LSDB:</p>
+
+<pre><code># show ip ospf database
+</code></pre>
+
+<p>Display information for a specific type of LSA (e.g. router, network, summary etc):</p>
+
+<pre><code># show ip ospf database &lt;type&gt;
+</code></pre>
+
+<p>Show OSPF routing table:</p>
+
+<pre><code># show ip ospf route
+</code></pre>
+
+<p>Show ABRs:</p>
+
+<pre><code># show ip ospf border-routers
+</code></pre>
+
+<hr />
+
+<h2 id="bgp-protocol">BGP Protocol</h2>
+
+<h3 id="enable-1">Enable</h3>
+
+<p>Enter router configuration mode for bgp, in AS (autonomous system) 65010</p>
+
+<pre><code>(config)# router bgp 65010
+</code></pre>
+
+<h3 id="configuration-1">Configuration</h3>
+
+<p>Add network 192.168.0.0/16 to be advertised by BGP (does not activate bgp) on corresponding interfaces:</p>
+
+<pre><code>(config-router)# network 192.168.0.0/16
+</code></pre>
+
+<p>Add router with IP 172.17.17.1 in list of BGP neighbors in AS 65020:</p>
+
+<pre><code>(config-router)# neighbor 172.17.17.1 remote-as 65020
+</code></pre>
+
+<p>Set the IP address 172.17.17.1 as router ID:</p>
+
+<pre><code>(config-router)# bgp router-id 172.17.17.1
+</code></pre>
+
+<p>Announce static/connected/rip/ospf routes respectively:</p>
+
+<pre><code>(config-router)# redistribute static/connected/rip/ospf
+</code></pre>
+
+<p>Aggregate network prefixes to reduce the size of BGP routing table:</p>
+
+<pre><code>(config-router)# aggregate-address
+</code></pre>
+
+<h3 id="information-1">Information</h3>
+
+<p>Show general info that BGP has learned:</p>
+
+<pre><code># show ip bgp 
+</code></pre>
+
+<p>&hellip;or a short summary of them:</p>
+
+<pre><code># show ip bgp summary
+</code></pre>
+
+<p>Show BGP path information for network 10.0.2.1:</p>
+
+<pre><code># show ip bgp 10.0.2.1
+</code></pre>
+
+<p>Show info for BGP neighbors:</p>
+
+<pre><code># show ip bgp neighbors
+</code></pre>
+
+<p>Show info for neighbor 172.17.17.1:</p>
+
+<pre><code># show ip bgp neighbors 172.17.17.1 
+</code></pre>
+
+<p>Show advertised routes to neighbor 172.17.17.1:</p>
+
+<pre><code># show ip bgp neighbors 172.17.17.1 advertised-routes 
+</code></pre>
+
+<p>Show routes that BGP learns from neighbor 172.17.17.1:</p>
+
+<pre><code># show ip bgp neighbors 172.17.17.1 routes 
+</code></pre>
+
+<h3 id="applying-policies">Applying policies</h3>
+
+<p>Create a filter (prefix list) of permitted (permit) or denied (deny) prefixes with name PrefixListName:</p>
+
+<pre><code>(config)# ip prefix-list PrefixListName permit/deny prefix 
+</code></pre>
+
+<p>Apply prefix list with name PrefixListName to neighbor 172.18.0.1 to incoming (in) or outgoing (out) traffic:</p>
+
+<pre><code>(config-router)# neighbor 172.18.0.1 prefix-list PrefixListName in/out 
+</code></pre>
+
+<p>Create a route map and define order=100 (sequence to insert to/delete from existing route-map entry):</p>
+
+<pre><code>(config)# route-map RouteMapName permit/deny 100
+</code></pre>
+
+<p>Apply route map in neighbor 172.17.17.1 to incoming (in) or outgoing (out) traffic:</p>
+
+<pre><code>(config-router)# neighbor 172.17.17.1 route-map RouteMapName in/out 
+</code></pre>
+
+<hr />
+
+<h2 id="ipv6">IPv6</h2>
+
+<h3 id="general-shell">General (Shell)</h3>
+
+<p>To enable ipv6 on em0 and accept Router Advertisement messages:</p>
+
+<pre><code>$ sysrc ifconfig_em0_ipv6=&quot;inet6 accept_rtadv&quot;
+</code></pre>
+
+<p>Assign ipv6 address fd00:1::<sup>2</sup>&frasl;<sub>64</sub> to interface em0:</p>
+
+<pre><code>$ ifconfig em0 inet6 fd00:1::2/64
+</code></pre>
+
+<p>Show routing table:</p>
+
+<pre><code>$ netstat -r6
+</code></pre>
+
+<p>Show ndp table (Neighbor Discovery Protocol - Substitute for ARP)</p>
+
+<pre><code>$ ndp -a
+</code></pre>
+
+<p>Add as default gateway the host fd00:1::1 :</p>
+
+<pre><code class="language-bash">$ route -6 add default fd00:1::1
+</code></pre>
+
+<h3 id="routing-quagga">Routing (Quagga)</h3>
+
+<p>Enable daemons for ipv6:</p>
+
+<pre><code>$ service quagga stop
+$ touch /usr/local/etc/quagga/ripngd.conf
+$ chown quagga:quagga /usr/local/etc/quagga/ripngd.conf
+$ touch /usr/local/etc/quagga/ospf6d.conf
+$ chown quagga:quagga /usr/local/etc/quagga/ospf6d.conf
+$ sysrc quagga_daemons=&quot;zebra ripd ripngd ospfd opdf6d bgpd&quot;
+$ service quagga start
+</code></pre>
+
+<p>Assign address fd00:1::<sup>1</sup>&frasl;<sub>64</sub> to an interface:</p>
+
+<pre><code>(config-if)# ipv6 a fd00:1::1/64
+</code></pre>
+
+<p>Show routing table for ipv6:</p>
+
+<pre><code># sh ipv6 route
+</code></pre>
+
+<h4 id="static">Static</h4>
+
+<p>Add static route to network fd00:2::/64 through fd00:3::2</p>
+
+<pre><code>(config)# ipv6 route fd00:2::/64 fd00:3::2
+</code></pre>
+
+<h4 id="dynamic">Dynamic</h4>
+
+<h5 id="rip">RIP</h5>
+
+<p>Enter router configuration mode for ripng:</p>
+
+<pre><code>(config)# router ripng
+</code></pre>
+
+<p>Enable RIP for ipv6 on interface em0:</p>
+
+<pre><code>(config-router)# net em0
+</code></pre>
+
+<h5 id="ospf">OSPF</h5>
+
+<p>Enter router configuration mode for BGP:</p>
+
+<pre><code>(config)# router ospf6
+</code></pre>
+
+<p>Specify 1.1.1.1 as router ID:</p>
+
+<pre><code>(config-ospf6)# router-id 1.1.1.1
+</code></pre>
+
+<p>Activate ospf on interface em0 in area 0.0.0.0:</p>
+
+<pre><code>(config-ospf6)# int em0 area 0.0.0.0
+</code></pre>
+
+<h5 id="bgp">BGP</h5>
+
+<p>Enter router configuration mode for BGP declaring autonomous system (AS) 65010</p>
+
+<pre><code>(config)# router bgp 65010
+</code></pre>
+
+<p>Set router ID 1.1.1.1:</p>
+
+<pre><code>(config-router)# bgp router-id 1.1.1.1
+</code></pre>
+
+<p>Disable IPv4 unicast for neighbor establishment (do this only if you use entirelly IPv6 addresses)</p>
+
+<pre><code>(config-router)# no bgp default ipv4-unicast
+</code></pre>
+
+<p>Declare router with address fd00:3::2 as neighbor in AS 65020:</p>
+
+<pre><code>(config-router)# neighbor fd00:3::2 remote-as 65020
+</code></pre>
+
+<p>Enter submenu for address family IPv6:</p>
+
+<pre><code>(config-router)# address-family ipv6
+</code></pre>
+
+<p>Advertise network fd00:2::/64</p>
+
+<pre><code>(config-router-af)# net fd00:1::/64
+</code></pre>
+
+<p>Enable neighbor relation with fd00:3::2 :</p>
+
+<pre><code>(config-router-af)# neighbor fd00:3::2 activate
+</code></pre>
+
+<hr />
+
+<p>I hope the series was helpful. If you have any questions, feel free to send me an email.</p>
+
+</main>
+
+  <footer>
+  
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('code.language-cpp').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+  
+  <hr/>
+  &copy; <a href="https://nickgavalas.com">Nick Gavalas</a> 2018-2019 | <a href="https://github.com/NikosGavalas">Github</a> | <a href="https://linkedin.com/in/NikosGavalas">Linkedin</a>
+  
+  </footer>
+  </body>
+</html>
+

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://nickgavalas.com/categories/</loc>
+    <lastmod>2019-05-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/categories/devops/</loc>
+    <lastmod>2019-05-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/tags/devops/</loc>
+    <lastmod>2019-05-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/</loc>
+    <lastmod>2019-05-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/posts/</loc>
+    <lastmod>2019-05-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/tags/security/</loc>
+    <lastmod>2019-05-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/categories/security/</loc>
+    <lastmod>2019-05-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/ssh-how-to-prevent-mitm-attacks/</loc>
+    <lastmod>2019-05-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/tags/</loc>
+    <lastmod>2019-05-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/categories/algorithms/</loc>
+    <lastmod>2019-02-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/tags/algorithms/</loc>
+    <lastmod>2019-02-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/tags/programming/</loc>
+    <lastmod>2019-02-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/solving-the-multiple-choice-knapsack-problem/</loc>
+    <lastmod>2019-02-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/tags/ansible/</loc>
+    <lastmod>2018-09-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/ansible-hostvars-json-querying-with-jmespath/</loc>
+    <lastmod>2018-09-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/building-networks-with-freebsd-part-2/</loc>
+    <lastmod>2018-07-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/categories/networking/</loc>
+    <lastmod>2018-07-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/tags/networking/</loc>
+    <lastmod>2018-07-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/building-networks-with-freebsd-part-1/</loc>
+    <lastmod>2018-06-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/tags/docker/</loc>
+    <lastmod>2018-05-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/docker-primer/</loc>
+    <lastmod>2018-05-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nickgavalas.com/about/</loc>
+  </url>
+  
+</urlset>

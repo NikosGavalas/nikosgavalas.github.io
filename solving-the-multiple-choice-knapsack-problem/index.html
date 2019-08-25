@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Solving the Multiple Choice Knapsack Problem | Nick Gavalas</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/default.min.css">
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">posts</a></li>
+      
+      <li><a href="/about/">about</a></li>
+      
+      <li><a href="/tags/">tags</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Solving the Multiple Choice Knapsack Problem</span></h1>
+
+<h2 class="date">2019/02/06</h2>
+</div>
+
+<main>
+<p>The 0-1 Knapsack problem is a popular combinatorial optimization problem:</p>
+
+<blockquote>
+<p>Given a set of n items, each having a value \( p_i \) and a weight of \( w_i \), find a subset of these items such that the total value is maximized, while keeping the total weight of the items under a given constant weight capacity W.</p>
+</blockquote>
+
+<p>Formally, we need to maximize \( \sum_{i=1}^{n}{p_{i}f_{i}} \), while subjecting to \( \sum_{i=1}^{n}{w_{i}f_{i}} \le W \), \( f_i \in \{0, 1\}, \forall i \in \{ 1, &hellip;, n\} \).</p>
+
+<p>This problem has a nice Dynamic Programming solution, which runs in \( O(nW) \) time (<a href="https://en.wikipedia.org/wiki/Pseudo-polynomial_time">pseudopolynomial</a>). It is a computationally hard problem, as it is NP-Complete, but it has many important applications.</p>
+
+<p>It has <a href="https://en.wikipedia.org/wiki/List_of_knapsack_problems">many known variations</a>, one of which is the Multiple Choice Knapsack Problem. In this case, the items are subdivided into \( k \) classes, each having \( N_i \) items, and exactly one item must be taken from each class. Formally, we need to maximize \( \sum_{i=1}^{k}\sum_{j \in N_i}{p_{ij}x_{ij}} \), while subjecting to \( \sum_{i=1}^{k}\sum_{j \in N_i}{w_{ij}x_{ij}} \le W\), with \( \sum_{j \in N_i}{x_{ij}} = 1, \forall i \in \{1, &hellip;, k\}\) and \( x_{ij} \in \{0, 1\}, \forall i \in \{1, &hellip;, k\} \) and \( \forall j \in N_i \).</p>
+
+<p>To solve this problem, we will use a Dynamic Programming approach. The recursive equation that describes the relation between the overlapping subproblems is the following:</p>
+
+<p>\[ Value[i, j] = \max_{1 \le u \le N_i, w_{iu} \le j}\{ Value[i-1, j-w_{iu}] + p_{iu} \} \]</p>
+
+<p>Below is an implementation in C++:</p>
+
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int max_value(const vector&lt;vector&lt;int&gt;&gt;&amp; weight,
+               const vector&lt;vector&lt;int&gt;&gt;&amp; value,
+               int max_weight) {
+    if (weight.empty())
+        return 0;
+
+    vector&lt;int&gt; last(max_weight + 1, -1);
+    for (int i = 0; i &lt; weight[0].size(); ++i) {
+        if (weight[0][i] &lt; max_weight)
+            last[weight[0][i]] = max(last[weight[0][i]], value[0][i]);
+    }
+
+    vector&lt;int&gt; current(max_weight + 1);
+    for (int i = 1; i &lt; weight.size(); ++i) {
+        fill(current.begin(), current.end(), -1);
+        for (int j = 0; j &lt; weight[i].size(); ++j) {
+            for (int k = weight[i][j]; k &lt;= max_weight; ++k) {
+                if (last[k - weight[i][j]] &gt; 0)
+                    current[k] = max(current[k],
+                                     last[k - weight[i][j]] + value[i][j]);
+            }
+        }
+        swap(current, last);
+    }
+
+    return *max_element(last.begin(), last.end());
+}
+
+// driver code
+int main(int argc, char const* argv[]) {
+    vector&lt;int&gt; values_class_1;
+    values_class_1.push_back(2);
+    values_class_1.push_back(3);
+
+    vector&lt;int&gt; weights_class_1;
+    weights_class_1.push_back(3);
+    weights_class_1.push_back(4);
+
+    vector&lt;int&gt; values_class_2;
+    values_class_2.push_back(1);
+    values_class_2.push_back(2);
+
+    vector&lt;int&gt; weights_class_2;
+    weights_class_2.push_back(2);
+    weights_class_2.push_back(3);
+
+    vector&lt;vector&lt;int&gt;&gt; values;
+    values.push_back(values_class_1);
+    values.push_back(values_class_2);
+    vector&lt;vector&lt;int&gt;&gt; weights;
+    weights.push_back(weights_class_1);
+    weights.push_back(weights_class_2);
+
+    int max_weight = 7;
+
+    cout &lt;&lt; max_value(weights, values, max_weight) &lt;&lt; endl;
+
+    return 0;
+}
+</code></pre>
+
+<p>The time complexity of this solution is \(O(C\sum_{i=1}^{k}{N_i})\).</p>
+
+</main>
+
+  <footer>
+  
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('code.language-cpp').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+  
+  <hr/>
+  &copy; <a href="https://nickgavalas.com">Nick Gavalas</a> 2018-2019 | <a href="https://github.com/NikosGavalas">Github</a> | <a href="https://linkedin.com/in/NikosGavalas">Linkedin</a>
+  
+  </footer>
+  </body>
+</html>
+

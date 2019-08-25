@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on Nick Gavalas</title>
+    <link>https://nickgavalas.com/tags/docker/</link>
+    <description>Recent content in docker on Nick Gavalas</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 02 May 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://nickgavalas.com/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Docker Primer</title>
+      <link>https://nickgavalas.com/docker-primer/</link>
+      <pubDate>Wed, 02 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickgavalas.com/docker-primer/</guid>
+      <description>I wrote this little article when I was learning about Docker, to use it for self reference. But then I thought that other beginners may find it useful too, so why not post it on my blog?
+So let&amp;rsquo;s get right into it.
+What is Docker? If you already have an idea about what docker is, and why it&amp;rsquo;s userful, skip this part.
+Docker is a platform that allows you to run your applications in an isolated environment.</description>
+    </item>
+    
+  </channel>
+</rss>

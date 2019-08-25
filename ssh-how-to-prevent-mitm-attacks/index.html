@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SSH: How to prevent MITM attacks | Nick Gavalas</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/default.min.css">
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">posts</a></li>
+      
+      <li><a href="/about/">about</a></li>
+      
+      <li><a href="/tags/">tags</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">SSH: How to prevent MITM attacks</span></h1>
+
+<h2 class="date">2019/05/29</h2>
+</div>
+
+<main>
+<p>Consider the following scenario: You connect to some remote machine for the
+first time via SSH, and you get the following message:</p>
+
+<pre><code>nick@sapphire: $ ssh &lt;host&gt;
+The authenticity of host '&lt;host&gt;' can't be established.
+ECDSA key fingerprint is SHA256:I9Uxj/t8o1tSpfnA/II1BJqvMw8eELmLhRQAylPL7Lk.
+Are you sure you want to continue connecting (yes/no)?
+</code></pre>
+
+<p>The SSH client gives you the SHA256 hash of the remote host&rsquo;s public key (its
+fingerprint) and asks you to verify that the host you are attempting to
+connect to <em>is indeed the one you want to connect to</em>.</p>
+
+<p>If you do not verify that the fingerprint is correct,
+some hosts may have changed addresses and you could end up
+connecting to the wrong server in the best case scenario, or someone may be spoofing
+the hostname and execute a man-in-the-middle attack in the worst case. The MITM can then
+decrypt and read all communication between you and the remote host, by
+pretending to be him.</p>
+
+<p>So how do you verify the fingerprint then? Either ask the remote machine&rsquo;s
+administrator to give you the fingerprint via another secure channel,
+or if you have physical access to
+the machine, run:</p>
+
+<pre><code>ssh-keygen -E sha256 -lf /etc/ssh/ssh_host_ecdsa_key.pub
+</code></pre>
+
+<p>You may modify this command to use a different hash (md5 for example,
+like github) or a different key (the default one is the ECDSA though).</p>
+
+<p>This will give you a line like this:</p>
+
+<pre><code>256 SHA256:I9Uxj/t8o1tSpfnA/II1BJqvMw8eELmLhRQAylPL7Lk &lt;user&gt;@&lt;host&gt; (ECDSA)
+</code></pre>
+
+<p>Therefore, the remote machine&rsquo;s fingerprint is:</p>
+
+<pre><code>I9Uxj/t8o1tSpfnA/II1BJqvMw8eELmLhRQAylPL7Lk
+</code></pre>
+
+<p>Now upon attempting to connect, the SSH client gives me this fingerprint and
+asks me if it is correct. By comparing the two strings I can see that they are
+the same so I know that I am actually &ldquo;talking&rdquo; to the server I intented to.</p>
+
+<p>If I wanted to do this programmatically, I would receive the remote ECDSA key
+and write it to a temporary file with:</p>
+
+<pre><code>ssh-keyscan -t ecdsa &lt;host&gt; &gt; /tmp/pubkey
+</code></pre>
+
+<p>, and then obtain the fingerprint with (along with some output processing not
+shown here):</p>
+
+<pre><code>ssh-keygen -E sha256 -lf /tmp/pubkey
+</code></pre>
+
+<p>I could also compare the public keys immediately if I have them both.</p>
+
+<p>Now there are other ways to verify the authenticity of the remote host and
+establish trust (certificates for example), but they require more complex
+set-ups and are only
+useful for cases where you can&rsquo;t have physical access to the machine or
+you cannot trust that the remote server&rsquo;s administrator will supply you with
+the correct fingerprint.
+The way shown here is definitely the simplest.</p>
+
+<p>Upon successful connection, the ssh client will store the fingerprint
+into the <code>~/.ssh/known_hosts</code> file and trust it every time, so you don&rsquo;t
+need to do this whole procedure every time.</p>
+
+</main>
+
+  <footer>
+  
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('code.language-cpp').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+  
+  <hr/>
+  &copy; <a href="https://nickgavalas.com">Nick Gavalas</a> 2018-2019 | <a href="https://github.com/NikosGavalas">Github</a> | <a href="https://linkedin.com/in/NikosGavalas">Linkedin</a>
+  
+  </footer>
+  </body>
+</html>
+

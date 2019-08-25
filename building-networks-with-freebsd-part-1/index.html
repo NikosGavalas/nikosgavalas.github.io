@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Building networks with FreeBSD (Part 1) | Nick Gavalas</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/default.min.css">
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">posts</a></li>
+      
+      <li><a href="/about/">about</a></li>
+      
+      <li><a href="/tags/">tags</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Building networks with FreeBSD (Part 1)</span></h1>
+
+<h2 class="date">2018/06/25</h2>
+</div>
+
+<main>
+
+
+<p>Welcome to my tutorial series for using the FreeBSD OS and the <a href="https://www.quagga.net/">Quagga</a> software routing suite for building network architectures.</p>
+
+<p>I hope this series serves a good reference point for anyone interested in examining and getting hands-on experience with the routing protocols and network topologies. However I won&rsquo;t be going into the details on how the protocols work.</p>
+
+<p>To emulate the needed hardware for testing purposes, I &rsquo;m using VirtualBox, and I recommend it.</p>
+
+<p>For instructions on installing <a href="https://www.freebsd.org/where.html">FreeBSD</a> and <a href="https://www.quagga.net/">Quagga</a> you can look at their websites.</p>
+
+<p>This post is the first part, in which we&rsquo;ll give an overview of the networking capabilities and tools of the FreeBSD OS. We&rsquo;ll see how to properly configure the system, how to create bridges, VLANs, how to route packets statically, as well as an introduction to the ipfw firewall, with some examples.</p>
+
+<hr />
+
+<h2 id="freebsd">FreeBSD</h2>
+
+<p>System Configuration in <code>/etc/rc.conf</code>.
+Instead of directly editing the file it&rsquo;s better to use <code>sysrc</code>.</p>
+
+<h3 id="rc-conf-sysrc">rc.conf - sysrc</h3>
+
+<p>Enable packet forwarding (act as gateway)</p>
+
+<pre><code>$ sysrc gateway_enable=&quot;YES&quot;
+</code></pre>
+
+<p>Set hostname (kept after reboot):</p>
+
+<pre><code>$ sysrc hostname=&quot;router.example.com&quot;
+</code></pre>
+
+<p>Configure interfaces:</p>
+
+<pre><code>$ sysrc ifconfig_em0=&quot;inet 10.10.10.100 netmask 255.255.255.0&quot;
+$ sysrc ifconfig_em1=&quot;DCHP&quot; # aquire address from DHCP
+</code></pre>
+
+<p>Set gateway 10.10.10.100:</p>
+
+<pre><code>$ sysrc defaultrouter=&quot;10.10.10.100&quot;
+</code></pre>
+
+<h3 id="ifconfig">ifconfig</h3>
+
+<p>Activate/Deactivate interface em0:</p>
+
+<pre><code>$ ifconfig em0 up/down
+</code></pre>
+
+<p>Specify address 192.168.1.1, netmask 255.255.255.0 and broadcast address 192.168.1.255 on em0:</p>
+
+<pre><code>$ ifconfig em0 192.168.1.1 netmask 255.255.255.0 broadcast 192.168.1.255
+</code></pre>
+
+<p>Quicker way:</p>
+
+<pre><code>$ ifconfig em0 192.168.1.1/24
+</code></pre>
+
+<p>Delete address from interface em0:</p>
+
+<pre><code>$ ifconfig em0 delete
+</code></pre>
+
+<h3 id="dhclient">dhclient</h3>
+
+<p>Activate DHCP client on interface em0:</p>
+
+<pre><code>$ dhclient em0
+</code></pre>
+
+<h3 id="tcpdump">tcpdump</h3>
+
+<p>(Credits to Daniel Miessler, more examples <a href="https://danielmiessler.com/study/tcpdump/">here</a>)</p>
+
+<h4 id="useful-flags">Useful flags</h4>
+
+<ul>
+<li><code>-i any</code> : Listen on all interfaces</li>
+<li><code>-i em0</code> : Listen on interface em0</li>
+<li><code>-n</code> : Don&rsquo;t resolve hostnames</li>
+<li><code>-t</code> : Human-readable timestamp output</li>
+<li><code>-tttt</code> : Maximally human-readable timestamp output</li>
+<li><code>-A</code> : Packet contents in ascii</li>
+<li><code>-X</code> : Show packets contents in both hex and ascii</li>
+<li><code>-v, -vv, -vvv</code> : Verbosity</li>
+<li><code>-e</code> : Show ethernet header too</li>
+<li><code>-S</code> : Absolute sequence numbers</li>
+</ul>
+
+<h4 id="expressions">Expressions</h4>
+
+<p>Useful keywords are:</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">Keyword</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center"><code>host</code></td>
+<td align="left">All traffic associated with specified host</td>
+</tr>
+
+<tr>
+<td align="center"><code>net</code></td>
+<td align="left">All traffic associated with specified network</td>
+</tr>
+
+<tr>
+<td align="center"><code>port</code></td>
+<td align="left">All traffic associated with specified port</td>
+</tr>
+
+<tr>
+<td align="center"><code>src</code></td>
+<td align="left">Traffic source</td>
+</tr>
+
+<tr>
+<td align="center"><code>dst</code></td>
+<td align="left">Traffic destination</td>
+</tr>
+
+<tr>
+<td align="center"><code>tcp</code></td>
+<td align="left">Protocol TCP</td>
+</tr>
+
+<tr>
+<td align="center"><code>udp</code></td>
+<td align="left">Protocol UDP</td>
+</tr>
+
+<tr>
+<td align="center"><code>icmp</code></td>
+<td align="left">Protocol ICMP</td>
+</tr>
+</tbody>
+</table>
+
+<p>Combine the keywords with <code>and</code> (or <code>&amp;&amp;</code>), <code>or</code> (or <code>||</code>), <code>not</code> (or <code>!</code>).</p>
+
+<h4 id="files">Files</h4>
+
+<p>Write output to PCAP file:</p>
+
+<pre><code>$ tcpdump -w pcap_file
+</code></pre>
+
+<p>Read PCAP file:</p>
+
+<pre><code>$ tcpdump -r pcap_file
+</code></pre>
+
+<h4 id="examples">Examples</h4>
+
+<p>No hostnames/ports resolution, be very verbose, use absolute sequence numbers and show traffic coming from host 10.5.2.3 and has destination the port number 3389:</p>
+
+<pre><code>$ tcpdump -nnvvvS src 10.5.2.3 and dst port 3389
+</code></pre>
+
+<p>No hostname/ports resolution, show ethernet header, and display all packets that either use the udp protocol or they come from host 192.168.1.2 and go to network 192.168.1.0/24:</p>
+
+<pre><code>$ tcpdump -nne 'udp or (src 192.168.1.2 and dest net 192.168.1.0/24)'
+</code></pre>
+
+<h3 id="netstat">netstat</h3>
+
+<p>Show active connections without name resolution:</p>
+
+<pre><code>$ netstat -an
+</code></pre>
+
+<p>Show routing table without name resolution:</p>
+
+<pre><code>$ netstat -rn
+</code></pre>
+
+<hr />
+
+<h2 id="lans">LANs</h2>
+
+<h3 id="arp">ARP</h3>
+
+<p>View arp table</p>
+
+<pre><code>$ arp -a
+</code></pre>
+
+<p>Clear arp table</p>
+
+<pre><code>$ arp -d -a
+</code></pre>
+
+<h3 id="bridges">Bridges</h3>
+
+<p>Create/Destroy a network pseudo-device bridge called bridgeX where X=0:</p>
+
+<pre><code>$ ifconfig bridge0 create/destroy
+</code></pre>
+
+<p>Add as members the interface em0, em1, em2 and enable bridge0 (run ifconfig em0 up etc first):</p>
+
+<pre><code>$ ifconfig bridge0 addm em0 addm em1 addm em2 up 
+</code></pre>
+
+<p>Remove interface em0 from bridge0:</p>
+
+<pre><code>$ ifconfig bridge0 deletem em0 
+</code></pre>
+
+<p>View the addresses that bridge0 has learned and associated ports:</p>
+
+<pre><code>$ ifconfig bridge0 addr 
+</code></pre>
+
+<p>Clear addresses that have been learned dynamically:</p>
+
+<pre><code>$ ifconfig bridge0 flush 
+</code></pre>
+
+<p>Enable the STP protocol on interfaces em0, em1, em2 of bridge bridge0:</p>
+
+<pre><code>$ ifconfig bridge0 stp em0 stp em1 stp em2 
+</code></pre>
+
+<p>Disable the STP protocol on interfaces em0, em1, em2 of bridge bridge0:</p>
+
+<pre><code>$ ifconfig bridge0 -stp em0 -stp em1 -stp em2 
+</code></pre>
+
+<p>Set priority value for bridge bridge0 (default value is 32768, minimum 0 and maximum is 61440):</p>
+
+<pre><code>$ ifconfig bridge0 priority value 
+</code></pre>
+
+<p>Set priority value for interface em0 of bridge bridge0:</p>
+
+<pre><code>$ ifconfig bridge0 ifpriority em0 &lt;value&gt;
+</code></pre>
+
+<p>Set cost for path through em0 of bridge bridge0:</p>
+
+<pre><code>$ ifconfig bridge0 ifpathcost em0 &lt;value&gt; 
+</code></pre>
+
+<h3 id="link-aggregation">Link aggregation</h3>
+
+<p>Create a network pseudo-device for aggregating links, called laggX, where X=0 for example:</p>
+
+<pre><code>$ ifconfig lagg0 create 
+</code></pre>
+
+<p>Add interface em0 to lagg0:</p>
+
+<pre><code>$ ifconfig lagg0 laggport em0
+</code></pre>
+
+<p>Remove interface em0 from lagg0:</p>
+
+<pre><code>$ ifconfig lagg0 -laggport em0
+</code></pre>
+
+<p>Specify aggregation protocol (default value is failov):</p>
+
+<pre><code>$ ifconfig lagg0 laggproto proto
+</code></pre>
+
+<h3 id="vlans">VLANs</h3>
+
+<p>Create pseudo-interface VLAN based on interface em0, that belongs to vlan with vlan_tag=5, and assign IP address 192.168.20.<sup>20</sup>&frasl;<sub>24</sub>:</p>
+
+<pre><code>$ ifconfig em0.5 create vlan 5 vlandev em0 inet 192.168.20.20/24
+</code></pre>
+
+<p>Create only the pseudo-interface with vlan_tag=5:</p>
+
+<pre><code>$ ifconfig em0.5 create
+</code></pre>
+
+<hr />
+
+<h2 id="routing-basics">Routing Basics</h2>
+
+<p>Enable packet forwarding:</p>
+
+<pre><code>$ systcl net.inet.ip.forwarding=1
+</code></pre>
+
+<p>Enable proxy ARP</p>
+
+<pre><code>$ sysctl net.link.ether.inet.proxyall=1
+</code></pre>
+
+<p>View system routing table:</p>
+
+<pre><code>$ netstat -r
+</code></pre>
+
+<p>Add default route:</p>
+
+<pre><code>$ route add default 192.168.1.1
+</code></pre>
+
+<p>Add route to network 192.168.0.0/16 through gateway 192.168.1.1</p>
+
+<pre><code>$ route add -net 192.168.0.0/16 192.168.1.1
+</code></pre>
+
+<p>Add route to host 192.168.1.2 through gateway 192.168.1.1</p>
+
+<pre><code>$ route add -host 192.168.1.2 192.168.1.1
+</code></pre>
+
+<p>Change gateway for already defined route to network 192.168.0.0/16:</p>
+
+<pre><code>$ route change -net 192.168.0.0/16 192.168.2.1
+</code></pre>
+
+<p>Show route for specified destination</p>
+
+<pre><code>$ route show &lt;destination&gt;
+</code></pre>
+
+<p>Delete route for destination</p>
+
+<pre><code>$ route del &lt;destination&gt;
+</code></pre>
+
+<p>Delete all routes</p>
+
+<pre><code>$ route flush
+</code></pre>
+
+<hr />
+
+<h2 id="firewall-ipfw">Firewall (ipfw)</h2>
+
+<p>Enable by loading the corresponding kernel module:</p>
+
+<pre><code>$ kldload ipfw
+</code></pre>
+
+<p>Add ipfw rule:</p>
+
+<pre><code>$ ipfw add rule_number action proto from src src_port to dst dst_port options
+</code></pre>
+
+<p>, where:
+- rule_number: The sequence number of the rule (value in range 1-65535)
+- action: can be <code>allow</code>, <code>deny</code>, or <code>check-state</code>
+- proto: <code>ip4</code>, <code>ip6</code>, <code>all</code> for any protocol, etc
+- src: source address
+- src_port: source port
+- dst: destination address
+- dst_port: destination port
+- options: <code>in</code> or <code>out</code> for direction, <code>via</code> to specify interface, <code>icmptypes &lt;type&gt;</code>, <code>keep-state</code> (which will create a dynamic rule to allow bi-directional communication for matching protocol and port), and more.</p>
+
+<p>Show ipfw rules:</p>
+
+<pre><code>$ ipfw show
+</code></pre>
+
+<p>Flush all rules:</p>
+
+<pre><code>$ ipfw flush
+</code></pre>
+
+<h3 id="nat-in-kernel-on-ipfw">NAT (in-kernel, on ipfw)</h3>
+
+<p>Add entry to the NAT table:</p>
+
+<pre><code>$ ipfw nat nat_number config nat_config
+</code></pre>
+
+<p>, where nat_number is instance number on the NAT table and nat_config can be:
+- ip _ip<em>address</em>: specify address to be used for translation
+- if <em>nic</em>: use address of card <em>nic</em>, even if it changes dynamically
+- same_ports: try to not change the ports
+- reset: resets the table if addresses change
+- deny_in: denies all incoming traffic
+- redirect_addr <em>localIP</em> <em>publicIP</em>: translate <em>publicIP</em> to <em>localIP</em> and vice versa
+- redirect_proto <em>proto</em> <em>localIP</em> [publicIP [remoteIP]]: same but for protocol <em>proto</em>
+- redirect_port <em>proto</em> <em>targetIP:targetPort</em> [<em>aliasIP:</em>]<em>aliasPort</em> [<em>remoteIP</em>[:<em>remotePort</em>]]: basically port forwarding</p>
+
+<p>Show all NAT tables:</p>
+
+<pre><code>$ ipfw nat show config
+</code></pre>
+
+<h3 id="examples-1">Examples</h3>
+
+<pre><code>$ ipfw add 100 deny ip from 1.2.3.0/24 to me
+</code></pre>
+
+<pre><code>$ ipfw add 200 allow tcp from me to any keep-state
+</code></pre>
+
+<p>Create an in-kernel NAT table with instance number 123 so that packets forwarded to it (matched by the corresponding ipfw rule) have their addresses translated to the address of interface em0, they reset when addresses change and traffic going to 172.16.16.2 (em0) is translated to 192.168.1.3. Then attach this table to ipfw rule 100:</p>
+
+<pre><code>$ ipfw nat 123 config if em0 reset redirect_addr 192.168.1.3 172.16.16.2
+$ ipfw add 100 nat 123 all from any to any
+</code></pre>
+
+<hr />
+
+<p>In the next post, we&rsquo;ll see how to use Quagga for dynamic routing, both in IPv4 and IPv6.</p>
+
+</main>
+
+  <footer>
+  
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('code.language-cpp').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+  
+  <hr/>
+  &copy; <a href="https://nickgavalas.com">Nick Gavalas</a> 2018-2019 | <a href="https://github.com/NikosGavalas">Github</a> | <a href="https://linkedin.com/in/NikosGavalas">Linkedin</a>
+  
+  </footer>
+  </body>
+</html>
+

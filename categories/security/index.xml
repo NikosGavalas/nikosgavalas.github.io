@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>security on Nick Gavalas</title>
+    <link>https://nickgavalas.com/categories/security/</link>
+    <description>Recent content in security on Nick Gavalas</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 29 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://nickgavalas.com/categories/security/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>SSH: How to prevent MITM attacks</title>
+      <link>https://nickgavalas.com/ssh-how-to-prevent-mitm-attacks/</link>
+      <pubDate>Wed, 29 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickgavalas.com/ssh-how-to-prevent-mitm-attacks/</guid>
+      <description>Consider the following scenario: You connect to some remote machine for the first time via SSH, and you get the following message:
+nick@sapphire: $ ssh &amp;lt;host&amp;gt; The authenticity of host &#39;&amp;lt;host&amp;gt;&#39; can&#39;t be established. ECDSA key fingerprint is SHA256:I9Uxj/t8o1tSpfnA/II1BJqvMw8eELmLhRQAylPL7Lk. Are you sure you want to continue connecting (yes/no)?  The SSH client gives you the SHA256 hash of the remote host&amp;rsquo;s public key (its fingerprint) and asks you to verify that the host you are attempting to connect to is indeed the one you want to connect to.</description>
+    </item>
+    
+  </channel>
+</rss>

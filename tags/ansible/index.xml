@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ansible on Nick Gavalas</title>
+    <link>https://nickgavalas.com/tags/ansible/</link>
+    <description>Recent content in ansible on Nick Gavalas</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 26 Sep 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://nickgavalas.com/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Ansible hostvars JSON querying with JMESPath</title>
+      <link>https://nickgavalas.com/ansible-hostvars-json-querying-with-jmespath/</link>
+      <pubDate>Wed, 26 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickgavalas.com/ansible-hostvars-json-querying-with-jmespath/</guid>
+      <description>I was writing an ansible playbook to deploy an Apache Flink cluster, and I ran into this problem while editing the configuration files:
+ How can I get the total number of the vCPUs of all the &amp;ldquo;slave&amp;rdquo; machines running on the cluster?
+ I thought of the hostvars ansible variable, which stores the gathered facts about the hosts, so using the debug module, I printed it out. The result was a JSON like that:</description>
+    </item>
+    
+  </channel>
+</rss>

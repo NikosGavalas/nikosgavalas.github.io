@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>networking on Nick Gavalas</title>
+    <link>https://nickgavalas.com/categories/networking/</link>
+    <description>Recent content in networking on Nick Gavalas</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 03 Jul 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://nickgavalas.com/categories/networking/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Building networks with FreeBSD (Part 2)</title>
+      <link>https://nickgavalas.com/building-networks-with-freebsd-part-2/</link>
+      <pubDate>Tue, 03 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickgavalas.com/building-networks-with-freebsd-part-2/</guid>
+      <description>Welcome to the second part of my tutorial series. In this post we&amp;rsquo;ll see how to use the Quagga Software Suite for dynamic routing.
+The dynamic routing protocols we &amp;rsquo;ll use are the most widely used today: RIP, OSPF and BGP.
+For some details on what these protocols are used for, and how they work, you can take a look at this post.
+At the end of the post you will find details for the IPv6 versions of these protocols.</description>
+    </item>
+    
+    <item>
+      <title>Building networks with FreeBSD (Part 1)</title>
+      <link>https://nickgavalas.com/building-networks-with-freebsd-part-1/</link>
+      <pubDate>Mon, 25 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickgavalas.com/building-networks-with-freebsd-part-1/</guid>
+      <description>Welcome to my tutorial series for using the FreeBSD OS and the Quagga software routing suite for building network architectures.
+I hope this series serves a good reference point for anyone interested in examining and getting hands-on experience with the routing protocols and network topologies. However I won&amp;rsquo;t be going into the details on how the protocols work.
+To emulate the needed hardware for testing purposes, I &amp;rsquo;m using VirtualBox, and I recommend it.</description>
+    </item>
+    
+  </channel>
+</rss>

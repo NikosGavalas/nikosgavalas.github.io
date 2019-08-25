@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>devops on Nick Gavalas</title>
+    <link>https://nickgavalas.com/tags/devops/</link>
+    <description>Recent content in devops on Nick Gavalas</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 29 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://nickgavalas.com/tags/devops/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>SSH: How to prevent MITM attacks</title>
+      <link>https://nickgavalas.com/ssh-how-to-prevent-mitm-attacks/</link>
+      <pubDate>Wed, 29 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickgavalas.com/ssh-how-to-prevent-mitm-attacks/</guid>
+      <description>Consider the following scenario: You connect to some remote machine for the first time via SSH, and you get the following message:
+nick@sapphire: $ ssh &amp;lt;host&amp;gt; The authenticity of host &#39;&amp;lt;host&amp;gt;&#39; can&#39;t be established. ECDSA key fingerprint is SHA256:I9Uxj/t8o1tSpfnA/II1BJqvMw8eELmLhRQAylPL7Lk. Are you sure you want to continue connecting (yes/no)?  The SSH client gives you the SHA256 hash of the remote host&amp;rsquo;s public key (its fingerprint) and asks you to verify that the host you are attempting to connect to is indeed the one you want to connect to.</description>
+    </item>
+    
+    <item>
+      <title>Ansible hostvars JSON querying with JMESPath</title>
+      <link>https://nickgavalas.com/ansible-hostvars-json-querying-with-jmespath/</link>
+      <pubDate>Wed, 26 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickgavalas.com/ansible-hostvars-json-querying-with-jmespath/</guid>
+      <description>I was writing an ansible playbook to deploy an Apache Flink cluster, and I ran into this problem while editing the configuration files:
+ How can I get the total number of the vCPUs of all the &amp;ldquo;slave&amp;rdquo; machines running on the cluster?
+ I thought of the hostvars ansible variable, which stores the gathered facts about the hosts, so using the debug module, I printed it out. The result was a JSON like that:</description>
+    </item>
+    
+    <item>
+      <title>Docker Primer</title>
+      <link>https://nickgavalas.com/docker-primer/</link>
+      <pubDate>Wed, 02 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickgavalas.com/docker-primer/</guid>
+      <description>I wrote this little article when I was learning about Docker, to use it for self reference. But then I thought that other beginners may find it useful too, so why not post it on my blog?
+So let&amp;rsquo;s get right into it.
+What is Docker? If you already have an idea about what docker is, and why it&amp;rsquo;s userful, skip this part.
+Docker is a platform that allows you to run your applications in an isolated environment.</description>
+    </item>
+    
+  </channel>
+</rss>

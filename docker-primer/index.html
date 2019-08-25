@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Docker Primer | Nick Gavalas</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/default.min.css">
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">posts</a></li>
+      
+      <li><a href="/about/">about</a></li>
+      
+      <li><a href="/tags/">tags</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Docker Primer</span></h1>
+
+<h2 class="date">2018/05/02</h2>
+</div>
+
+<main>
+
+
+<p>I wrote this little article when I was learning about Docker, to use it for self reference. But
+then I thought that other beginners may find it useful too, so why not post it on my blog?</p>
+
+<p>So let&rsquo;s get right into it.</p>
+
+<h2 id="what-is-docker">What is Docker?</h2>
+
+<p><em>If you already have an idea about what docker is, and why it&rsquo;s userful, skip this part.</em></p>
+
+<p>Docker is a platform that allows you to run your applications in an <strong>isolated environment</strong>. These isolated environments are called <em>docker containers</em>.</p>
+
+<p>Docker containers behave <strong>like virtual machines</strong>, meaning that they run your application in a sandboxed environment, with restricted access to the host machine&rsquo;s resources, but have the following differences:</p>
+
+<ul>
+<li>In constrast to the VMs, Docker uses the actual <strong>host machine&rsquo;s kernel</strong>. For this reason Docker containers can be started in second(s) (while VMs need significantly more time to boot) and are very expendable (you can completely remove a linux debian container for example and start another in less than a second), and</li>
+<li>Provides all the <strong>software dependencies</strong> and tools (bins/libs) needed for your app to run, in a very cohesive way. This is means that if your app runs in a docker container, then it will run and behave the same way on every other computer/server that executes the same container via Docker.</li>
+</ul>
+
+<p>Let&rsquo;s think of a use case:</p>
+
+<p>You have written a Python app, with quite a few dependencies. You have two options:
+- You either ship it with a script, that installs all these the dependencies which also often require root priviledges and piss people off, or
+- You ship it nicely wrapped in a container.</p>
+
+<p>Now of course images need to be built somehow. The instructions to do so are placed in the <em>Dockerfile</em>. That&rsquo;s what you ship with your app, a simple file.</p>
+
+<p>Now the guy that want to run your application, will simply:
+1. Build the <strong>image</strong> from the Dockerfile (or pull it directly from the <a href="https://hub.docker.com/">Docker Hub</a>)
+2. And run a <strong>container</strong> from this image.</p>
+
+<p>Simple as that.</p>
+
+<p>Docker has way more capabilities than what we &rsquo;ll see in this article. I will barely scratch the surface here.</p>
+
+<p>Now Docker runs a <em>daemon</em> application in your system, supervising all your containers, and you can interact with it via its command-line interface.</p>
+
+<p>In the rest of the article you&rsquo;ll find the most common docker commands.</p>
+
+<hr />
+
+<h2 id="images">Images</h2>
+
+<p>Note about the notation: all the &lt;&hellip;&gt; fields below are variables, used for demonstration.</p>
+
+<p>List Images:</p>
+
+<pre><code>docker images
+</code></pre>
+
+<h3 id="dockerfile">Dockerfile</h3>
+
+<p>Common commands:</p>
+
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Explanation</th>
+<th>Example</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>FROM &lt;base_image&gt;:&lt;tag&gt;</code></td>
+<td>Select base image and tag to build upon (find base images at <a href="https://hub.docker.com/">DockerHub</a>).</td>
+<td>FROM ubuntu:16.04</td>
+</tr>
+
+<tr>
+<td><code>RUN &lt;command&gt;</code></td>
+<td>Runs a command on the image while building it (it is commited to the docker image). Often used to install packages.</td>
+<td>RUN apt-get update</td>
+</tr>
+
+<tr>
+<td><code>CMD [&quot;&lt;command&gt;&quot;]</code></td>
+<td>The command the container executes by default when you launch the built image. Only one CMD allowed per Dockerfile. The CMD can be overridden when starting a container with docker run $image $other_command</td>
+<td>CMD [&ldquo;/bin/bash&rdquo;]</td>
+</tr>
+
+<tr>
+<td><code>EXPOSE &lt;port&gt;</code></td>
+<td>Exposes a port to the host machine</td>
+<td>EXPOSE 80</td>
+</tr>
+
+<tr>
+<td><code>WORKDIR dir</code></td>
+<td>Sets a working directory</td>
+<td>WORKDIR /home/node</td>
+</tr>
+
+<tr>
+<td><code>ENV &lt;VAR_NAME&gt; &lt;value&gt;</code></td>
+<td>Sets environment variables inside the image</td>
+<td>ENV LISTEN_PORT 8080</td>
+</tr>
+
+<tr>
+<td><code>COPY &lt;src&gt; &lt;dest&gt;</code></td>
+<td>Copy files from src path (host) to destination path (inside the image) while building it</td>
+<td>COPY config/php.ini /usr/local/etc/php</td>
+</tr>
+
+<tr>
+<td><code>USER &lt;user&gt;</code></td>
+<td>Specify a user for the container</td>
+<td>USER root</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="examples">Examples</h3>
+
+<h4 id="example-1">Example 1</h4>
+
+<pre><code class="language-docker"># FROM base_image:tag
+FROM ubuntu:16.04
+
+# Run command inside the container
+RUN apt-get update
+RUN apt-get install -y gcc
+</code></pre>
+
+<h4 id="example-2">Example 2</h4>
+
+<pre><code class="language-docker">FROM php:7.0-apache
+
+# copy files from &lt;src dir&gt; to &lt;destination dir&gt;, inside the image
+COPY config/php.ini /usr/local/etc/php
+COPY src/ /var/www/html
+
+# expose a port to the host machine
+EXPOSE 80
+</code></pre>
+
+<p>Building an Image:</p>
+
+<pre><code>docker build &lt;directory_containing_the_dockerfile&gt;
+</code></pre>
+
+<p>Useful parameters:</p>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Explanation</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>-t &lt;name&gt;</code></td>
+<td>Give a name to the image (tag)</td>
+</tr>
+</tbody>
+</table>
+
+<p>Remove an image:</p>
+
+<pre><code>docker rmi &lt;image_ID_or_name&gt;
+</code></pre>
+
+<hr />
+
+<h2 id="containers">Containers</h2>
+
+<p>List all containers (running):</p>
+
+<pre><code>docker ps
+</code></pre>
+
+<p>List all containers (running and stopped):</p>
+
+<pre><code>docker ps -a
+</code></pre>
+
+<p>Create (Run) Container from an Image:</p>
+
+<pre><code>docker run [OPTIONS] &lt;image_ID_or_name&gt; &lt;initial_command&gt;
+</code></pre>
+
+<p>, where <code>&lt;initial_command&gt;</code> is the command executed on the container right after it is run, (e.g. /bin/bash), and overrides the one specified in the Dockerfile with CMD.</p>
+
+<p>Useful options:</p>
+
+<table>
+<thead>
+<tr>
+<th>Options (w/ example)</th>
+<th>Explanation</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>--name my_container</code></td>
+<td>Give a name to the container</td>
+</tr>
+
+<tr>
+<td><code>-v /home/user/src:/var/www/html</code></td>
+<td>Mount a volume (basically share directory with the host)</td>
+</tr>
+
+<tr>
+<td><code>-p 8080:80</code></td>
+<td>Maps the port of the host to the port of the container</td>
+</tr>
+
+<tr>
+<td><code>-d</code></td>
+<td>Detached mode - run in the background</td>
+</tr>
+
+<tr>
+<td><code>-it</code></td>
+<td>Allocates to the container a valid pseudo-tty and keeps stdin connected</td>
+</tr>
+
+<tr>
+<td><code>--env VAR1=value</code></td>
+<td>Sets environment variable to the container</td>
+</tr>
+
+<tr>
+<td><code>--restart=always</code></td>
+<td>Always restarts the container if it stops</td>
+</tr>
+
+<tr>
+<td><code>--link another_container</code></td>
+<td>Links containers together. Docker updates the /etc/hosts file in the one container to add &ldquo;another_container&rdquo; as a local hostname pointing to the other container. However this method is not recommended. It is better to define a docker Network (see below).</td>
+</tr>
+
+<tr>
+<td><code>--network=mynetwork</code></td>
+<td>Places the container in a user-defined network (see Network section below). Using user-defined networks you have an internal name resolution at your disposal. You can call other containers on the same user-defined network by name.</td>
+</tr>
+</tbody>
+</table>
+
+<p>There are also a lot more options, allowing you to control resource allocation to the container,
+networking etc. For more check <a href="https://docs.docker.com/engine/reference/commandline/run/">this</a> page.</p>
+
+<p>Stop Container:</p>
+
+<pre><code>docker stop &lt;container_ID_or_name&gt;
+</code></pre>
+
+<p>Start Container:</p>
+
+<pre><code>docker start &lt;container_ID_or_name&gt;
+</code></pre>
+
+<p>(with -a, it starts attached.)</p>
+
+<p>Remove container:</p>
+
+<pre><code>docker rm &lt;container_ID_or_name&gt;
+</code></pre>
+
+<p>Execute a command to a running container (example):</p>
+
+<pre><code>docker exec -it &lt;container_ID_or_name&gt; echo &quot;Hello from inside&quot;
+</code></pre>
+
+<p>Attach local standard input, output, and error streams to a running container:</p>
+
+<pre><code>docker attach &lt;container_ID_or_name&gt;
+</code></pre>
+
+<p>If you do not see the shell, click the up arrow. To detach and leave running use CTRL+p then CTRL+q.</p>
+
+<p>Create a new image from a container’s changes:</p>
+
+<pre><code>docker commit &lt;container_ID_or_name&gt; &lt;new_image_name&gt;
+</code></pre>
+
+<hr />
+
+<h2 id="network">Network</h2>
+
+<p>Create a network:</p>
+
+<pre><code>docker network create &lt;networkname&gt;
+</code></pre>
+
+<p>List available networks:</p>
+
+<pre><code>docker network ls
+</code></pre>
+
+<p>Remove network:</p>
+
+<pre><code>docker network rm &lt;networkname&gt;
+</code></pre>
+
+<hr />
+
+<p>Hope this will help you get started with Docker to &ldquo;fix&rdquo; the dependency hell of modern software.</p>
+
+<p>For errors/suggestions, let me know asap.</p>
+
+<!--
+## Useful links:
+- https://stackoverflow.com/questions/29957653/docker-container-not-starting-docker-start
+- https://stackoverflow.com/questions/26153686/how-do-i-run-a-command-on-an-already-existing-docker-container
+- https://deis.com/blog/2016/connecting-docker-containers-1/
+- https://deis.com/blog/2016/connecting-docker-containers-2/
+-->
+
+</main>
+
+  <footer>
+  
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('code.language-cpp').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+  
+  <hr/>
+  &copy; <a href="https://nickgavalas.com">Nick Gavalas</a> 2018-2019 | <a href="https://github.com/NikosGavalas">Github</a> | <a href="https://linkedin.com/in/NikosGavalas">Linkedin</a>
+  
+  </footer>
+  </body>
+</html>
+

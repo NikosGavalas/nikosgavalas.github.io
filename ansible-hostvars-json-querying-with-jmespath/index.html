@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ansible hostvars JSON querying with JMESPath | Nick Gavalas</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/default.min.css">
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">posts</a></li>
+      
+      <li><a href="/about/">about</a></li>
+      
+      <li><a href="/tags/">tags</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Ansible hostvars JSON querying with JMESPath</span></h1>
+
+<h2 class="date">2018/09/26</h2>
+</div>
+
+<main>
+<p>I was writing an ansible playbook to deploy an Apache Flink cluster, and I ran into this problem while editing the configuration files:</p>
+
+<blockquote>
+<p>How can I get the total number of the vCPUs of all the &ldquo;slave&rdquo; machines running on the cluster?</p>
+</blockquote>
+
+<p>I thought of the <code>hostvars</code> ansible variable, which stores the gathered <code>facts</code> about the hosts, so using the <code>debug</code> module, I printed it out. The result was a JSON like that:</p>
+
+<pre><code class="language-json">{
+    &quot;node1&quot;: {&quot;flink_type&quot;: &quot;master&quot;, &quot;ansible_processor_vcpus&quot;: 2, ...},
+    &quot;node2&quot;: {&quot;flink_type&quot;: &quot;slave&quot;, &quot;ansible_processor_vcpus&quot;: 4, ...},
+    &quot;node3&quot;: {&quot;flink_type&quot;: &quot;slave&quot;, &quot;ansible_processor_vcpus&quot;: 8, ...}
+}
+</code></pre>
+
+<p>So all I needed to do was to <em>filter the nodes on the value of the attribute <code>flink_type</code> and get a list of their <code>ansible_processor_vcpus</code> values</em>, so that I can then sum them up with jinja, right?</p>
+
+<p>Well it wasn&rsquo;t very easy. As it turns out, <strong>if</strong> my case was:</p>
+
+<pre><code class="language-json">{
+    &quot;nodes&quot;: [
+        {&quot;flink_type&quot;: &quot;master&quot;, &quot;ansible_processor_vcpus&quot;: 2, ...},
+        {&quot;flink_type&quot;: &quot;slave&quot;, &quot;ansible_processor_vcpus&quot;: 4, ...},
+        {&quot;flink_type&quot;: &quot;slave&quot;, &quot;ansible_processor_vcpus&quot;: 8, ...}
+    ]
+}
+</code></pre>
+
+<p>the query-solution would be as easy as <code>nodes[?flink_type=='slave'].ansible_processor_vcpus</code>, which would return the list <code>[4, 8]</code>.</p>
+
+<p>But in my case, I first needed to convert the JSON into a list of objects, then get the first element of this list, and <em>then</em> perform the filtering and attribute selection.</p>
+
+<p>The solution I have found to be working correctly is this one:</p>
+
+<pre><code>[@.*][0][?flink_type==`slave`].ansible_processor_vcpus
+</code></pre>
+
+<p>, which is very ugly. I was hoping I could do something like <code>*[?flink_type=='slave'].ansible_processor_vcpus</code> but this doesn&rsquo;t work.</p>
+
+<p>If there is a more elegant solution to this, I would really like to hear it, contact links are below.</p>
+
+</main>
+
+  <footer>
+  
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('code.language-cpp').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+  
+  <hr/>
+  &copy; <a href="https://nickgavalas.com">Nick Gavalas</a> 2018-2019 | <a href="https://github.com/NikosGavalas">Github</a> | <a href="https://linkedin.com/in/NikosGavalas">Linkedin</a>
+  
+  </footer>
+  </body>
+</html>
+

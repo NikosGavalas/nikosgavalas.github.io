@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>algorithms on Nick Gavalas</title>
+    <link>https://nickgavalas.com/tags/algorithms/</link>
+    <description>Recent content in algorithms on Nick Gavalas</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 06 Feb 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://nickgavalas.com/tags/algorithms/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Solving the Multiple Choice Knapsack Problem</title>
+      <link>https://nickgavalas.com/solving-the-multiple-choice-knapsack-problem/</link>
+      <pubDate>Wed, 06 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickgavalas.com/solving-the-multiple-choice-knapsack-problem/</guid>
+      <description>The 0-1 Knapsack problem is a popular combinatorial optimization problem:
+ Given a set of n items, each having a value \( p_i \) and a weight of \( w_i \), find a subset of these items such that the total value is maximized, while keeping the total weight of the items under a given constant weight capacity W.
+ Formally, we need to maximize \( \sum_{i=1}^{n}{p_{i}f_{i}} \), while subjecting to \( \sum_{i=1}^{n}{w_{i}f_{i}} \le W \), \( f_i \in \{0, 1\}, \forall i \in \{ 1, &amp;hellip;, n\} \).</description>
+    </item>
+    
+  </channel>
+</rss>
