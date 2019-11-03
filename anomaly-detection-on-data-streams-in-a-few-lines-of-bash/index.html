@@ -97,10 +97,10 @@ This way, when training or evaluating, in batch or on stream, we have access to 
 
 <h3 id="fetch-and-prepare-the-dataset">Fetch and prepare the dataset</h3>
 
-<p>The dataset is available <a href="http://kdd.ics.uci.edu/databases/kddcup99/kddcup99.html">here</a>. I will be using the 10 percent version.</p>
+<p>The dataset is available <a href="http://kdd.ics.uci.edu/databases/kddcup99/kddcup99.html">here</a>. I will be using the 10 percent version, and only the HTTP protocol.</p>
 
-<p>We&rsquo;ll use curl for the GET request, pipe it into zcat (because it is gzipped), and then use awk to filter out most features,
-keeping only 4 columns: <code>duration</code>, <code>src_bytes</code> and <code>dst_bytes</code>, plus the <code>label</code>. We also edit the label to be <code>1</code> in case of
+<p>We&rsquo;ll use curl for the GET request, pipe it into zcat (because it is gzipped), and then use awk to keep only the HTTP rows, and filter out most features,
+keeping only the 4 most important columns: <code>duration</code>, <code>src_bytes</code> and <code>dst_bytes</code>, plus the <code>label</code>. We also edit the label to be <code>1</code> in case of
 anomaly, or <code>0</code>, in case of normal observation.</p>
 
 <pre><code class="language-bash">URL=http://kdd.ics.uci.edu/databases/kddcup99/kddcup.data_10_percent.gz # 10 percent
