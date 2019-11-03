@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Anomaly Detection on data streams, in a few lines of Bash | Nick Gavalas</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
+
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">posts</a></li>
+      
+      <li><a href="/about/">about</a></li>
+      
+      <li><a href="/tags/">tags</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Anomaly Detection on data streams, in a few lines of Bash</span></h1>
+
+<h2 class="date">2019/11/02</h2>
+</div>
+
+<main>
+
+
+<p>During the writing of my master thesis, I studied thoroughly Anomaly Detection algorithms with a focus on those of them that
+could be deployed not only on batches, but on streams of data, in order to achieve real-time Anomaly Detection, on a big scale.</p>
+
+<p>After research, I chose 5 algorithms with such capabilities that looked promising, studied the relevant papers and
+understood how they worked. I then proceeded to implement each one, run it on a cluster (with the help of
+Apache Flink) with real and synthetic datasets, and find out the strenghts and weaknesses of each.</p>
+
+<p>I plan on releasing all my implementations and experiments in the near future when I find some free time.</p>
+
+<h3 id="gaussian-model-to-detect-anomalies">Gaussian model to detect anomalies</h3>
+
+<p>One of these algorithms was based on a simple Gaussian-distribution model, which surpisingly, despite its simplicity, turned
+out to be the most robust on the real-world dataset I had used (the popular KDD Cup 99 dataset in case you are wondering).
+This algorithm was by far the fastest, and was yielding ROC AUC scores of over 0.97, which is pretty good for an
+algorithm that does only one pass on the data.</p>
+
+<p>I thought it would be fun to implement it in one line of Bash. While this is technically feasible, it would look very compressed
+and ugly, so I expanded it in a few more lines :) .</p>
+
+<h3 id="background">Background</h3>
+
+<p>Without further ado, let&rsquo;s begin with some theory. We start by assuming that our data are following the Gaussian distribution.</p>
+
+<p>Therefore, given an instance \( x \sim \mathcal{N}(\mu, \Sigma), x \in \mathbb{R}^d, x=[x_1, x_2, \ldots, x_d]^T \), its probability density function is:</p>
+
+<p>\[  p(x; \mu, \Sigma)= \frac{1}{(2\pi)^{d/2}|\Sigma|^{\frac{1}{2}}}\exp\bigg(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\bigg) \]</p>
+
+<p>where \(\mu \in \mathbb{R}^d\) is the mean and \( \Sigma \in \mathbb{R}^{d \times d} \) is the
+covariance matrix.</p>
+
+<p>Now assuming that variables \( x_i \sim \mathcal{N}(\mu_i, \sigma_i^{2}) \) are all independent, we get:</p>
+
+<p>\[ p(x) = p(x_1, x_2, \ldots, x_d) = p(x_1; \mu_1, \sigma_1^2)p(x_2; \mu_2, \sigma_2^2)\ldots p(x_d; \mu_d,  \sigma_d^2) = \prod_{j=1}^{d} p(x_j; \mu_j, \sigma_j^2) \]
+where:</p>
+
+<p>\[ p(x; \mu, \sigma^2)=\frac{1}{\sqrt{2\pi}\sigma} \exp\Big(- \frac{(x-\mu)^2}{2\sigma^2}\Big) \]</p>
+
+<p>To train the model (which basically consists of the values \( \mu_i, \sigma_i^2, \forall i \in [1, \ldots, d] \)), one needs to calculate the following
+parameters (MLE):</p>
+
+<ul>
+<li>\( \mu_i = \frac{1}{n} \sum_{j=1}^{n}{x_i^{(j)}} \), where \( n \) is the number of training examples (the size of the training dataset),</li>
+<li>\( \sigma_i^2 = \frac{1}{n}{\sum_{j=1}^{n}{(x_i^{(j)} - \mu_i)^2}} \)</li>
+</ul>
+
+<p>Then, in the evaluation phase, given a new example \( x \), we compute:</p>
+
+<p>\[ p(x) = \prod_{i=1}^{d}{ \frac{1}{\sqrt{2\pi}\sigma_i} \exp\Big(- \frac{(x_i-\mu_i)^2}{2\sigma_i^2}\Big) } \]
+and we flag \(x\) as anomaly is the value of \( p(x) \) is smaller than a threshold value \(\epsilon\) (hyperparameter).</p>
+
+<p>Now here is the <strong>imporant part</strong>. How will we compute these values incrementally?</p>
+
+<p>By having the tuples \( T_i = \big( \sum_{j=1}^{n}{x_i^{(j)}}, ~ \sum_{j=1}^{n}{{(x_i^{(j)})}^2}, ~ n \big) \), where \( n \) is the count of the instances,
+available at any point of the computation!
+This way, when training or evaluating, in batch or on stream, we have access to all parameters of the model \( \mu_i \) and
+\( \sigma_i^2 \) at any time by calculating:</p>
+
+<p>\[ \mu_i = \frac{\sum_{j=1}^{n}{x_i^{(j)}}}{n} = \frac{T_i[0]}{T_i[2]}, ~~~~~
+\sigma_i^2 = \frac{\sum_{j=1}^{n}{{(x_i^{(j)})}^2}}{n} - \mu_i^2 = \frac{T_i[1]}{T_i[2]} - (\frac{T_i[0]}{T_i[2]})^2 \]</p>
+
+<p>So let&rsquo;s go ahead and fetch the dataset, then implement the algorithm with awk.</p>
+
+<h3 id="fetch-and-prepare-the-dataset">Fetch and prepare the dataset</h3>
+
+<p>The dataset is available <a href="http://kdd.ics.uci.edu/databases/kddcup99/kddcup99.html">here</a>. I will be using the 10 percent version.</p>
+
+<p>We&rsquo;ll use curl for the GET request, pipe it into zcat (because it is gzipped), and then use awk to filter out most features,
+keeping only 4 columns: <code>duration</code>, <code>src_bytes</code> and <code>dst_bytes</code>, plus the <code>label</code>. We also edit the label to be <code>1</code> in case of
+anomaly, or <code>0</code>, in case of normal observation.</p>
+
+<pre><code class="language-bash">URL=http://kdd.ics.uci.edu/databases/kddcup99/kddcup.data_10_percent.gz # 10 percent
+OUTFILE=http.csv
+
+curl $URL | zcat | awk 'BEGIN{ FS=&quot;,&quot;; OFS=&quot;,&quot; } { LABEL=($NF==&quot;normal.&quot; ? 0 : 1); if($3 == &quot;http&quot;) print $1, $5, $6, LABEL }' &gt; $OUTFILE
+</code></pre>
+
+<p>So now our dataset with 64293 rows is in the http.csv file.</p>
+
+<h3 id="implementation">Implementation</h3>
+
+<p>We&rsquo;ll put our code in a file called <code>gauss.awk</code>. Start by defining some variables:</p>
+
+<pre><code class="language-bash">BEGIN {
+    FS = &quot;,&quot;;
+
+    # &lt; NF to ignore the last column (label)
+    for (i = 1; i &lt; NF; i++) {
+        SUMS[i] = 0;
+        SQUARES[i] = 0;
+    }
+}
+</code></pre>
+
+<p><code>FS</code> is a special variable used by awk, denoting the input field separator. Since we have a csv, we use commas.
+<code>SUMS</code> and <code>SQUARES</code> are two arrays, with the one holding the cumulative sum of the values of each feature, and the other
+holding the cumulative sum of the squares of these values.</p>
+
+<p>Next we move on to the main awk loop, and write the code which will apply to every row of the input file.</p>
+
+<p>Here we will first update the model, by updating the <code>SUMS</code> and <code>SQUARES</code> arrays. For each feature (or column, call it
+however you like), we update the respective value using the current row that awk is parsing.</p>
+
+<p>After that, we use the current row and the model (the arrays), to calculate an anomaly score, according to the formula
+we discussed earlier (see \( p(x) \)). To get an accurate value of \( \pi \) for the calculations, I am using <code>atan2(0, -1)</code>.</p>
+
+<pre><code class="language-bash">{
+    # Update the model
+    for (i = 1; i &lt; NF; i++) {
+        SUMS[i] += $i;
+        SQUARES[i] += $i ** 2;
+    }
+
+    # Calculate score using the model
+    score = 1;
+    for (i = 1; i &lt; NF; i++) {
+        mu = SUMS[i] / NR;
+        sigma2 = (SQUARES[i] / NR) - mu ** 2;
+        if (sigma2 == 0)
+            score = 0;
+        else {
+            score *= exp(- (($i - mu) ** 2) / (2 * sigma2)) / sqrt(2 * atan2(0, -1) * sigma2);
+        }
+    }
+
+    # Output the score
+    print score, $NF
+}
+</code></pre>
+
+<p>Finally, we output the score, along with the actual label.</p>
+
+<p>Now let&rsquo;s run this:</p>
+
+<pre><code class="language-bash">$ awk -f gauss.awk http.csv
+...
+2.01308e-12 0
+2.02266e-12 0
+2.04232e-12 0
+2.04342e-12 0
+2.0474e-12 0
+2.02895e-12 0
+2.0324e-12 0
+2.03025e-12 0
+</code></pre>
+
+<p>Looks good. Some warnings on stderr about the <code>exp()</code> function are normal, it is because some arguments passed in <code>exp</code> are <code>&lt; -745</code> and
+therefore return incredibly small values but awk handles them as <code>0</code> so we &rsquo;re good.</p>
+
+<p>Now I want to calculate the ROC AUC score, and for that, I will be using a simple python script with the <code>numpy</code> module,
+and the <code>roc_auc_score</code> function from the <code>scikit-learn</code> module:</p>
+
+<pre><code class="language-python">import numpy as np
+from sklearn.metrics import roc_auc_score
+from sys import stdin
+
+preds = []
+actuals = []
+
+for line in stdin:
+    s = line.split(' ')
+    preds.append(-float(s[0]))
+    actuals.append(int(s[1]))
+
+preds_arr = np.array(preds)
+actuals_arr = np.array(actuals)
+
+print(roc_auc_score(actuals_arr, preds_arr))
+</code></pre>
+
+<p>Now I can pipe the output of awk into the script, which I&rsquo;ll call <code>auroc.py</code>, like that:</p>
+
+<pre><code class="language-bash">$ awk -f gauss.awk  http.csv | python3 auroc.py
+</code></pre>
+
+<p>, and this prints the score, which is <code>0.9762313543238387</code>, a pretty good value.</p>
+
+<p>Last but not least, we can even choose a threshold and to start flagging the values. This is what an anomaly detector actually does. What&rsquo;s the
+intuition behind this? Since the scores are nothing more than the probability of the observation in the Gaussian distribution (the model),
+we will be flagging the value as anomaly, if this score is lower than a particular threshold, meaning that it is having a low probability
+of occurring.</p>
+
+<p>A good threshold here could be <code>9.83056225277626e-15</code> (estimated with some trial and error), so we can just change the last lines of the script to:</p>
+
+<pre><code class="language-bash">if (score &lt; 9.83056225277626e-15)
+    print 1, $NF
+else
+    print 0, $NF
+</code></pre>
+
+<p>, so that it prints <code>1</code> if the score is lower than the threshold, or <code>0</code> if is not, along with the actual label. You can now calculate the F1 score if
+you want with some <code>grep</code>s of the output.</p>
+
+<p>So there you go, one pass on the data and a few lines of awk are enough to handle many cases of spotting outliers in datasets.</p>
+
+<p>As always, for any questions or suggestions, send me an email.</p>
+
+<h3 id="sidenote-big-data-frameworks">Sidenote: Big Data Frameworks</h3>
+
+<p>This algorithm can be implemented in a Big Data framework (Apache Spark, Hadoop, Flink, whatever&hellip;) in a very straightforward way, with the functional
+operators <code>map</code> and <code>reduce</code>. Assume that our training data are \( n \) d-dimensional
+vectors \( x^{(j)} = [x_1^{(j)}, x_2^{(j)}, \ldots, x_d^{(j)}]^T, j \in [1, \ldots, n] \).
+Then the values of vectors \( \mu \) and \( \sigma^2 \) can be computed by:</p>
+
+<pre><code class="language-scala">// Scala
+dataSet
+  .map { x =&gt; (x, pow(x, 2), 1) }
+  .reduce { (x1, x2) =&gt; (x1._1 + x2._1, x1._2 + x2._2, x1._3 + x2._3) }
+  .collect()
+</code></pre>
+
+</main>
+
+  <footer>
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-122370931-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('code.language-cpp').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+  document.querySelectorAll('code.language-python').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+  document.querySelectorAll('code.language-bash').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+  
+  <hr/>
+  &copy; <a href="https://nickgavalas.com">Nick Gavalas</a> 2018-2019 | <a href="https://github.com/NikosGavalas">Github</a> | <a href="https://linkedin.com/in/NikosGavalas">Linkedin</a>
+  
+  </footer>
+  </body>
+</html>
+

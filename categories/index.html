@@ -6,7 +6,8 @@
     <title>Categories | Nick Gavalas</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/default.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
+
   </head>
 
   <body>
@@ -29,7 +30,7 @@
 <ul class="terms">
   
   <li>
-    <a href="/categories/algorithms/">algorithms</a> (1)
+    <a href="/categories/algorithms/">algorithms</a> (2)
   </li>
   
   <li>
@@ -62,14 +63,21 @@ if (!doNotTrack) {
 </script>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', (event) => {
   document.querySelectorAll('code.language-cpp').forEach((block) => {
     hljs.highlightBlock(block);
   });
+  document.querySelectorAll('code.language-python').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+  document.querySelectorAll('code.language-bash').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
 });
 </script>
+
   
   <hr/>
   &copy; <a href="https://nickgavalas.com">Nick Gavalas</a> 2018-2019 | <a href="https://github.com/NikosGavalas">Github</a> | <a href="https://linkedin.com/in/NikosGavalas">Linkedin</a>

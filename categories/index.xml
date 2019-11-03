@@ -6,10 +6,19 @@
     <description>Recent content in Categories on Nick Gavalas</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 29 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 Nov 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://nickgavalas.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>algorithms</title>
+      <link>https://nickgavalas.com/categories/algorithms/</link>
+      <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickgavalas.com/categories/algorithms/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>devops</title>
@@ -26,15 +35,6 @@
       <pubDate>Wed, 29 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://nickgavalas.com/categories/security/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>algorithms</title>
-      <link>https://nickgavalas.com/categories/algorithms/</link>
-      <pubDate>Wed, 06 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://nickgavalas.com/categories/algorithms/</guid>
       <description></description>
     </item>
     

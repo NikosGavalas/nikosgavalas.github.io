@@ -6,7 +6,8 @@
     <title>About me | Nick Gavalas</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/default.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
+
   </head>
 
   <body>
@@ -30,12 +31,13 @@
 </div>
 
 <main>
-<p>I graduated from the school of Electrical and Computer Engineering of the National Technical University of Athens.</p>
+<p>I graduated from the school of Electrical and Computer Engineering of the National Technical University of Athens, and
+I am currently employed as a Software Engineer (DevOps) in Athens, Greece.</p>
 
 <p>My interests include but are not limited to Big Data technologies, DevOps, Embedded Systems, Algorithms&hellip; really
 anything related to programming, systems, maths.</p>
 
-<p>I also enjoy drumming and astrophotography.</p>
+<p>I also enjoy drumming and astronomy.</p>
 
 <p>I&rsquo;d be happy to talk about all these, contact links are below.</p>
 
@@ -43,7 +45,7 @@ anything related to programming, systems, maths.</p>
 &ndash; Nick Gavalas<br><br>
 github: <a href="https://github.com/NikosGavalas">@nikosgavalas</a><br>
 linkedin: <a href="https://www.linkedin.com/in/nikosgavalas/">@nikosgavalas</a><br>
-email: <a href="mailto:gavalnick@gmail.com">gavalnick@gmail.com</a></p>
+email: <img src="/img/mail.png" alt="as" /></p>
 
 </main>
 
@@ -63,14 +65,21 @@ if (!doNotTrack) {
 </script>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', (event) => {
   document.querySelectorAll('code.language-cpp').forEach((block) => {
     hljs.highlightBlock(block);
   });
+  document.querySelectorAll('code.language-python').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+  document.querySelectorAll('code.language-bash').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
 });
 </script>
+
   
   <hr/>
   &copy; <a href="https://nickgavalas.com">Nick Gavalas</a> 2018-2019 | <a href="https://github.com/NikosGavalas">Github</a> | <a href="https://linkedin.com/in/NikosGavalas">Linkedin</a>

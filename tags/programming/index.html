@@ -6,7 +6,8 @@
     <title>programming | Nick Gavalas</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/default.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
+
   </head>
 
   <body>
@@ -35,6 +36,11 @@
   
   
   <li>
+    <span class="date">2019/11/02</span>
+    <a href="/anomaly-detection-on-data-streams-in-a-few-lines-of-bash/">Anomaly Detection on data streams, in a few lines of Bash</a>
+  </li>
+  
+  <li>
     <span class="date">2019/02/06</span>
     <a href="/solving-the-multiple-choice-knapsack-problem/">Solving the Multiple Choice Knapsack Problem</a>
   </li>
@@ -57,14 +63,21 @@ if (!doNotTrack) {
 </script>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', (event) => {
   document.querySelectorAll('code.language-cpp').forEach((block) => {
     hljs.highlightBlock(block);
   });
+  document.querySelectorAll('code.language-python').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+  document.querySelectorAll('code.language-bash').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
 });
 </script>
+
   
   <hr/>
   &copy; <a href="https://nickgavalas.com">Nick Gavalas</a> 2018-2019 | <a href="https://github.com/NikosGavalas">Github</a> | <a href="https://linkedin.com/in/NikosGavalas">Linkedin</a>

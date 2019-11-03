@@ -6,10 +6,20 @@
     <description>Recent content on Nick Gavalas</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 29 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 Nov 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://nickgavalas.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Anomaly Detection on data streams, in a few lines of Bash</title>
+      <link>https://nickgavalas.com/anomaly-detection-on-data-streams-in-a-few-lines-of-bash/</link>
+      <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickgavalas.com/anomaly-detection-on-data-streams-in-a-few-lines-of-bash/</guid>
+      <description>During the writing of my master thesis, I studied thoroughly Anomaly Detection algorithms with a focus on those of them that could be deployed not only on batches, but on streams of data, in order to achieve real-time Anomaly Detection, on a big scale.
+After research, I chose 5 algorithms with such capabilities that looked promising, studied the relevant papers and understood how they worked. I then proceeded to implement each one, run it on a cluster (with the help of Apache Flink) with real and synthetic datasets, and find out the strenghts and weaknesses of each.</description>
+    </item>
     
     <item>
       <title>SSH: How to prevent MITM attacks</title>
@@ -84,15 +94,10 @@ Docker is a platform that allows you to run your applications in an isolated env
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://nickgavalas.com/about/</guid>
-      <description>I graduated from the school of Electrical and Computer Engineering of the National Technical University of Athens.
+      <description>I graduated from the school of Electrical and Computer Engineering of the National Technical University of Athens, and I am currently employed as a Software Engineer (DevOps) in Athens, Greece.
 My interests include but are not limited to Big Data technologies, DevOps, Embedded Systems, Algorithms&amp;hellip; really anything related to programming, systems, maths.
-I also enjoy drumming and astrophotography.
-I&amp;rsquo;d be happy to talk about all these, contact links are below.
-
-&amp;ndash; Nick Gavalas
-github: @nikosgavalas
-linkedin: @nikosgavalas
-email: gavalnick@gmail.com</description>
+I also enjoy drumming and astronomy.
+I&amp;rsquo;d be happy to talk about all these, contact links are below.</description>
     </item>
     
   </channel>
