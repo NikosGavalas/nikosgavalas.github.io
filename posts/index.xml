@@ -12,11 +12,11 @@
     
     
     <item>
-      <title>Anomaly Detection on data streams, in a few lines of Bash</title>
-      <link>https://nickgavalas.com/anomaly-detection-on-data-streams-in-a-few-lines-of-bash/</link>
+      <title>Anomaly Detection on data streams, in one line of Bash</title>
+      <link>https://nickgavalas.com/anomaly-detection-on-data-streams-in-one-line-of-bash/</link>
       <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://nickgavalas.com/anomaly-detection-on-data-streams-in-a-few-lines-of-bash/</guid>
+      <guid>https://nickgavalas.com/anomaly-detection-on-data-streams-in-one-line-of-bash/</guid>
       <description>During the writing of my master thesis, I studied thoroughly Anomaly Detection algorithms with a focus on those of them that could be deployed not only on batches, but on streams of data, in order to achieve real-time Anomaly Detection, on a big scale.
 After research, I chose 5 algorithms with such capabilities that looked promising, studied the relevant papers and understood how they worked. I then proceeded to implement each one, run it on a cluster (with the help of Apache Flink) with real and synthetic datasets, and find out the strenghts and weaknesses of each.</description>
     </item>

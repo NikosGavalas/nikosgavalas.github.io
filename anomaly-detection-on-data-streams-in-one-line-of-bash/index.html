@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Anomaly Detection on data streams, in a few lines of Bash | Nick Gavalas</title>
+    <title>Anomaly Detection on data streams, in one line of Bash | Nick Gavalas</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
@@ -25,7 +25,7 @@
     </nav>
 
 <div class="article-meta">
-<h1><span class="title">Anomaly Detection on data streams, in a few lines of Bash</span></h1>
+<h1><span class="title">Anomaly Detection on data streams, in one line of Bash</span></h1>
 
 <h2 class="date">2019/11/02</h2>
 </div>
@@ -49,8 +49,8 @@ out to be the most robust on the real-world dataset I had used (the popular KDD 
 This algorithm was by far the fastest, and was yielding ROC AUC scores of over 0.97, which is pretty good for an
 algorithm that does only one pass on the data.</p>
 
-<p>I thought it would be fun to implement it in one line of Bash. While this is technically feasible, it would look very compressed
-and ugly, so I expanded it in a few more lines :) .</p>
+<p>I thought it would be fun to implement it in one line of Bash. While this is technically feasible, the awk script would look very compressed
+and ugly, so I expanded it in a few more lines :) . But altogether, it is one line.</p>
 
 <h3 id="background">Background</h3>
 
@@ -81,7 +81,7 @@ parameters (MLE):</p>
 <p>Then, in the evaluation phase, given a new example \( x \), we compute:</p>
 
 <p>\[ p(x) = \prod_{i=1}^{d}{ \frac{1}{\sqrt{2\pi}\sigma_i} \exp\Big(- \frac{(x_i-\mu_i)^2}{2\sigma_i^2}\Big) } \]
-and we flag \(x\) as anomaly is the value of \( p(x) \) is smaller than a threshold value \(\epsilon\) (hyperparameter).</p>
+and we flag \(x\) as anomaly if the value of \( p(x) \) is smaller than a threshold value \(\epsilon\) (hyperparameter).</p>
 
 <p>Now here is the <strong>imporant part</strong>. How will we compute these values incrementally?</p>
 
@@ -209,7 +209,7 @@ print(roc_auc_score(actuals_arr, preds_arr))
 
 <p>, and this prints the score, which is <code>0.9762313543238387</code>, a pretty good value.</p>
 
-<p>Last but not least, we can even choose a threshold and to start flagging the values. This is what an anomaly detector actually does. What&rsquo;s the
+<p>Last but not least, we can even choose a threshold and start flagging the values. This is what an anomaly detector actually does. What&rsquo;s the
 intuition behind this? Since the scores are nothing more than the probability of the observation in the Gaussian distribution (the model),
 we will be flagging the value as anomaly, if this score is lower than a particular threshold, meaning that it is having a low probability
 of occurring.</p>
@@ -225,13 +225,23 @@ else
 <p>, so that it prints <code>1</code> if the score is lower than the threshold, or <code>0</code> if is not, along with the actual label. You can now calculate the F1 score if
 you want with some <code>grep</code>s of the output.</p>
 
-<p>So there you go, one pass on the data and a few lines of awk are enough to handle many cases of spotting outliers in datasets.</p>
+<h3 id="putting-it-all-together">Putting it all together</h3>
+
+<p>Now let&rsquo;s glue everything together in one line:</p>
+
+<pre><code class="language-bash">$ curl -s $URL | zcat | awk 'BEGIN{ FS=&quot;,&quot;; OFS=&quot;,&quot; } { LABEL=($NF==&quot;normal.&quot; ? 0 : 1); if($3 == &quot;http&quot;) print $1, $5, $6, LABEL }' | awk -f gauss.awk 2&gt; /dev/null | python3 auroc.py
+0.9762313543238387
+</code></pre>
+
+<p>I got rid of the <code>http.csv</code> file and piped the output of the first awk directly into the second one, and I also redirected the stderr of the second awk to <code>/dev/null</code> to silence the warnings, so that we can get a clean output in the terminal.</p>
+
+<p>So there you go, one pass on the data with a few lines of awk are enough to handle many cases of spotting outliers in datasets.</p>
 
 <p>As always, for any questions or suggestions, send me an email.</p>
 
 <h3 id="sidenote-big-data-frameworks">Sidenote: Big Data Frameworks</h3>
 
-<p>This algorithm can be implemented in a Big Data framework (Apache Spark, Hadoop, Flink, whatever&hellip;) in a very straightforward way, with the functional
+<p>This algorithm can be implemented in any Big Data framework (Apache Spark, Hadoop, Flink, whatever&hellip;) in a very straightforward way, with the functional
 operators <code>map</code> and <code>reduce</code>. Assume that our training data are \( n \) d-dimensional
 vectors \( x^{(j)} = [x_1^{(j)}, x_2^{(j)}, \ldots, x_d^{(j)}]^T, j \in [1, \ldots, n] \).
 Then the values of vectors \( \mu \) and \( \sigma^2 \) can be computed by:</p>
@@ -242,6 +252,10 @@ dataSet
   .reduce { (x1, x2) =&gt; (x1._1 + x2._1, x1._2 + x2._2, x1._3 + x2._3) }
   .collect()
 </code></pre>
+
+<h3 id="references">References</h3>
+
+<p>This simple Gaussian model is presented in the great introductory course of <a href="https://www.coursera.org/learn/machine-learning">Andrew Ng on Coursera</a>. If you are interested in Machine Learning, I believe there is no better introductory course on the Internet than this one.</p>
 
 </main>
 
